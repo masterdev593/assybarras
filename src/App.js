@@ -15,10 +15,10 @@ function Copyright() {
         target="_blank"
         rel="noopener"
       >
-        IDF Importadora
+        {'IDF Importadora '}
       </Link>
       {new Date().getFullYear()}
-      {'. Todos los derechos reservados. Desarrollado por '}
+      {'. Todos los derechos reservados. Por '}
       <Link
         color="secondary"
         href="https://desarrollonodejs.pro/"
