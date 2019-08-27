@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,6 +88,11 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     color: theme.palette.text.primary,
     fontWeight: 'initial'
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200
   }
 }));
 
@@ -118,30 +124,78 @@ function Copyright() {
 
 function GridMain() {
   const classes = useStyles();
+  const [values, setValues] = React.useState({
+    parte: '',
+    descripcion: '',
+    cantidad: 1,
+    ubicacion: '',
+    marca: 'SAMSUNG',
+    origen: 'KOREA'
+  });
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography className={classes.paper} variant="h3" component="h3">
-          Imprimir Etiquetas
-        </Typography>
+      <Grid item xs={12} sm={6}>
+        <form className={classes.container} noValidate autoComplete="off">
+          <TextField
+            id="idnombre"
+            label="Nro. de Parte"
+            className={classes.textField}
+            onChange={handleChange('parte')}
+            value={values.parte.toUpperCase()}
+            margin="normal"
+          />
+          <TextField
+            id="iddescripcion"
+            label="Descripción"
+            className={classes.textField}
+            onChange={handleChange('descripcion')}
+            value={values.descripcion.toUpperCase()}
+            margin="normal"
+          />
+          <TextField
+            id="idcantidad"
+            label="Cantidad"
+            value={values.cantidad}
+            onChange={handleChange('cantidad')}
+            type="number"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true
+            }}
+            margin="normal"
+          />
+          <TextField
+            id="idubicacion"
+            label="Ubicación"
+            className={classes.textField}
+            onChange={handleChange('ubicacion')}
+            value={values.ubicacion.toUpperCase()}
+            margin="normal"
+          />
+          <TextField
+            id="idmarca"
+            label="Marca"
+            className={classes.textField}
+            onChange={handleChange('marca')}
+            value={values.marca}
+            margin="normal"
+          />
+          <TextField
+            id="idorigen"
+            label="Origen"
+            className={classes.textField}
+            onChange={handleChange('origen')}
+            value={values.origen}
+            margin="normal"
+          />
+        </form>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Paper className={classes.paper}>xs=12 sm=6</Paper>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Paper className={classes.paper}>xs=12 sm=6</Paper>
-      </Grid>
-      <Grid item xs={6} sm={3}>
-        <Paper className={classes.paper}>xs=6 sm=3</Paper>
-      </Grid>
-      <Grid item xs={6} sm={3}>
-        <Paper className={classes.paper}>xs=6 sm=3</Paper>
-      </Grid>
-      <Grid item xs={6} sm={3}>
-        <Paper className={classes.paper}>xs=6 sm=3</Paper>
-      </Grid>
-      <Grid item xs={6} sm={3}>
-        <Paper className={classes.paper}>xs=6 sm=3</Paper>
+        <Paper className={classes.paper}>Vista Previa</Paper>
       </Grid>
     </Grid>
   );
