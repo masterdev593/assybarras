@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 // Componentes
 import Inferior from '../../componentes/inferior';
 import Superior from '../../componentes/Zsuperior';
+import Barcode from '../../componentes/barcode';
+import ReactToPrint from 'react-to-print';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function GridMain() {
+  const componentRef = useRef();
   const classes = useStyles();
   const [values, setValues] = React.useState({
     parte: '',
@@ -104,7 +108,17 @@ function GridMain() {
         </form>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Paper className={classes.paper}>Vista Previa</Paper>
+        <Paper className={classes.paper}>
+            <Barcode ref={componentRef} />
+        </Paper>
+        <ReactToPrint
+          trigger={() => (
+            <Button color="secondary" variant="contained" style={{ margin: '2rem 0'}}>
+              Imprimir
+            </Button>
+          )}
+          content={() => componentRef.current}
+        />
       </Grid>
     </Grid>
   );
