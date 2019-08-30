@@ -7,15 +7,15 @@ import JsBarcode from 'react-barcode';
 class Barcode extends Component {
   render() {
     return (
-      <div style={{ padding: '1px', fontWeight: 'bold' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <p>ASSY DECO BATTERY</p>
-          <p>1 R10</p>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '1rem' }}>
+          <Typography>BATTERY</Typography>
+          <Typography>1 Q16</Typography>
         </div>
-        <JsBarcode value="GH82-18849B" />
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <p>SAMSUNG</p>
-          <p>KOREA</p>
+        <JsBarcode value='GH82-15658A' width='2'/>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography>SAMSUNG</Typography>
+          <Typography>KOREA</Typography>
         </div>
       </div>
     );
