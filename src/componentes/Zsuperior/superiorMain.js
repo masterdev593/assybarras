@@ -83,7 +83,7 @@ const SuperiorMain = () => {
           />
         </div>
         <div className={classes.title}>
-          <Button color="secondary" component={Link} to='./test'>Etiquetas</Button>
+          <Button color="secondary" component={Link} to='./'>Etiquetas</Button>
           <Button color="secondary" component={Link} to='./test'>Ventas</Button>
           <Button color="secondary" component={Link} to='./test'>Notas de Entrega</Button>
           <Button color="secondary" component={Link} to='./test'>Talleres</Button>
