@@ -113,7 +113,11 @@ function GridMain() {
         </Paper>
         <ReactToPrint
           trigger={() => (
-            <Button color="secondary" variant="contained" style={{ margin: '2rem 0'}}>
+            <Button
+              color="secondary"
+              variant="contained"
+              style={{ margin: '2rem 0' }}
+            >
               Imprimir
             </Button>
           )}
