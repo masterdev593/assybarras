@@ -1,25 +1,51 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 // Barcode
 import JsBarcode from 'react-barcode';
 
 class Barcode extends Component {
   render() {
+    const {
+      propParte,
+      propDescripcion,
+      propPieza,
+      propUbicacion,
+      propMarca,
+      propOrigen
+    } = this.props;
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '1rem' }}>
-          <Typography>BATTERY</Typography>
-          <Typography>1 Q16</Typography>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingTop: '1rem'
+          }}
+        >
+          <Typography>{propDescripcion}</Typography>
+          <Typography>
+            {propPieza} {propUbicacion}
+          </Typography>
         </div>
-        <JsBarcode value='GH82-15658A' width='2'/>
+        <JsBarcode value={propParte} width="2" />
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography>SAMSUNG</Typography>
-          <Typography>KOREA</Typography>
+          <Typography>{propMarca}</Typography>
+          <Typography>{propOrigen}</Typography>
         </div>
       </div>
     );
   }
 }
+
+Barcode.propTypes = {
+  propParte: PropTypes.string.isRequired,
+  propDescripcion: PropTypes.string.isRequired,
+  propPieza: PropTypes.string.isRequired,
+  propUbicacion: PropTypes.string.isRequired,
+  propMarca: PropTypes.string.isRequired,
+  propOrigen: PropTypes.string.isRequired
+};
 
 export default Barcode;
