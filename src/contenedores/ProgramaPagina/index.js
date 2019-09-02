@@ -10,6 +10,7 @@ import Inferior from '../../componentes/inferior';
 import Superior from '../../componentes/Zsuperior';
 import Barcode from '../../componentes/barcode';
 import ReactToPrint from 'react-to-print';
+import BarcodeReader from 'react-barcode-reader';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,14 +41,21 @@ function GridMain() {
   const [values, setValues] = React.useState({
     parte: '',
     descripcion: '',
-    cantidad: 1,
+    pieza: 1,
     ubicacion: '',
     marca: 'SAMSUNG',
-    origen: 'KOREA'
+    origen: 'KOREA',
+    resultado: ''
   });
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
+  };
+  const handleScan = data => {
+    setValues({ ...values, resultado: data });
+  };
+  const handleError = err => {
+    console.error(err);
   };
   return (
     <Grid container spacing={3}>
@@ -72,8 +80,8 @@ function GridMain() {
           <TextField
             id="idcantidad"
             label="Cantidad"
-            value={values.cantidad}
-            onChange={handleChange('cantidad')}
+            value={values.pieza}
+            onChange={handleChange('pieza')}
             type="number"
             className={classes.textField}
             InputLabelProps={{
@@ -94,7 +102,7 @@ function GridMain() {
             label="Marca"
             className={classes.textField}
             onChange={handleChange('marca')}
-            value={values.marca}
+            value={values.marca.toUpperCase()}
             margin="normal"
           />
           <TextField
@@ -102,14 +110,22 @@ function GridMain() {
             label="Origen"
             className={classes.textField}
             onChange={handleChange('origen')}
-            value={values.origen}
+            value={values.origen.toUpperCase()}
             margin="normal"
           />
         </form>
       </Grid>
       <Grid item xs={12} sm={6}>
         <Paper className={classes.paper}>
-            <Barcode ref={componentRef} />
+          <Barcode
+            propParte={values.parte.toUpperCase()}
+            propDescripcion={values.descripcion.toUpperCase()}
+            propPieza={values.pieza}
+            propUbicacion={values.ubicacion.toUpperCase()}
+            propMarca={values.marca.toUpperCase()}
+            propOrigen={values.origen.toUpperCase()}
+            ref={componentRef}
+          />
         </Paper>
         <ReactToPrint
           trigger={() => (
@@ -123,6 +139,10 @@ function GridMain() {
           )}
           content={() => componentRef.current}
         />
+        <div>
+          <BarcodeReader onError={handleError} onScan={handleScan} />
+          <p>{values.resultado.toUpperCase()}</p>
+        </div>
       </Grid>
     </Grid>
   );
