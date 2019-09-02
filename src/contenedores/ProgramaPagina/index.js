@@ -11,6 +11,7 @@ import Superior from '../../componentes/Zsuperior';
 import Barcode from '../../componentes/barcode';
 import ReactToPrint from 'react-to-print';
 import BarcodeReader from 'react-barcode-reader';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -78,8 +79,8 @@ function GridMain() {
             margin="normal"
           />
           <TextField
-            id="idcantidad"
-            label="Cantidad"
+            id="idpieza"
+            label="Piezas"
             value={values.pieza}
             onChange={handleChange('pieza')}
             type="number"
@@ -141,7 +142,7 @@ function GridMain() {
         />
         <div>
           <BarcodeReader onError={handleError} onScan={handleScan} />
-          <p>{values.resultado.toUpperCase()}</p>
+          <p>{_.replace(values.resultado.toUpperCase(), "'", '-')}</p>
         </div>
       </Grid>
     </Grid>
