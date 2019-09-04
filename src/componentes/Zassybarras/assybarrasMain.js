@@ -56,8 +56,17 @@ class AssyBarras extends Component {
     console.error(err);
   }
 
-  handleSubmit() {
-    this.props._cmdaddTodo('TEST');
+  handleSubmit(event) {
+    event.preventDefault();
+    let datos = {
+      parte: this.state.parte,
+      descripcion: this.state.descripcion
+    };
+    this.props._cmdaddTodo(datos);
+    this.setState = {
+      parte: '',
+      descripcion: ''
+    };
   }
   render() {
     const { classes } = this.props;
