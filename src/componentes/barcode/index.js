@@ -20,8 +20,7 @@ class Barcode extends Component {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
-            paddingTop: '1rem'
+            justifyContent: 'space-between'
           }}
         >
           <Typography>{propDescripcion}</Typography>
