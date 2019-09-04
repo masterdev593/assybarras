@@ -29,7 +29,7 @@ class Barcode extends Component {
             {propPieza} {propUbicacion}
           </Typography>
         </div>
-        <JsBarcode value={propParte} width="2" />
+        <JsBarcode value={propParte} />
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography>{propMarca}</Typography>
           <Typography>{propOrigen}</Typography>
@@ -42,7 +42,7 @@ class Barcode extends Component {
 Barcode.propTypes = {
   propParte: PropTypes.string.isRequired,
   propDescripcion: PropTypes.string.isRequired,
-  propPieza: PropTypes.string.isRequired,
+  propPieza: PropTypes.number.isRequired,
   propUbicacion: PropTypes.string.isRequired,
   propMarca: PropTypes.string.isRequired,
   propOrigen: PropTypes.string.isRequired
