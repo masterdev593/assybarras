@@ -63,10 +63,6 @@ class AssyBarras extends Component {
       descripcion: this.state.descripcion
     };
     this.props._cmdaddTodo(datos);
-    this.setState = {
-      parte: '',
-      descripcion: ''
-    };
   }
   render() {
     const { classes } = this.props;
