@@ -43,7 +43,7 @@ class AssyBarras extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value});
+    this.setState({[e.target.name]: e.target.value.toUpperCase()});
   }
 
   handleScan(data) {
@@ -56,9 +56,8 @@ class AssyBarras extends Component {
     console.error(err);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    let datos = {
+  handleSubmit() {
+        let datos = {
       parte: this.state.parte,
       descripcion: this.state.descripcion
     };
@@ -79,6 +78,8 @@ class AssyBarras extends Component {
               onChange={this.handleChange}
               value={this.state.parte.toUpperCase()}
               margin="normal"
+              autoFocus={true}
+              required={true}
             />
             <TextField
               id="iddescripcion"
@@ -88,6 +89,7 @@ class AssyBarras extends Component {
               onChange={this.handleChange}
               value={this.state.descripcion.toUpperCase()}
               margin="normal"
+              required={true}
             />
             <TextField
               id="idpieza"
@@ -101,6 +103,7 @@ class AssyBarras extends Component {
                 shrink: true
               }}
               margin="normal"
+              required={true}
             />
             <TextField
               id="idubicacion"
@@ -110,6 +113,7 @@ class AssyBarras extends Component {
               onChange={this.handleChange}
               value={this.state.ubicacion.toUpperCase()}
               margin="normal"
+              required={true}
             />
             <TextField
               id="idmarca"
@@ -119,6 +123,7 @@ class AssyBarras extends Component {
               onChange={this.handleChange}
               value={this.state.marca.toUpperCase()}
               margin="normal"
+              required={true}
             />
             <TextField
               id="idorigen"
@@ -128,6 +133,7 @@ class AssyBarras extends Component {
               onChange={this.handleChange}
               value={this.state.origen.toUpperCase()}
               margin="normal"
+              required={true}
             />
           </form>
         </Grid>
@@ -154,18 +160,11 @@ class AssyBarras extends Component {
               </Button>
             )}
             content={() => this.componentRef}
+            onBeforePrint={this.handleSubmit}
           />
           <div>
             <BarcodeReader onError={this.handleError} onScan={this.handleScan} />
             <p>{_.replace(this.state.resultado.toUpperCase(), "'", '-')}</p>
-            <Button
-                color="secondary"
-                variant="contained"
-                onClick={this.handleSubmit}
-                style={{ margin: '0 0' }}
-              >
-                Todo
-              </Button>
           </div>
         </Grid>
       </Grid>
