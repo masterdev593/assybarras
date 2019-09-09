@@ -5,9 +5,9 @@ const sendNotification = (payload) => ({
   payload
 })
 
-export const _cmdaddTodo = newTodo => (dispatch, getState, getFirebase) => {
+export const _cmdaddTodo = parte => (dispatch, getState, getFirebase) => {
   const firebase = getFirebase();
-  firebase.push('todos', newTodo).then(() => {
+  firebase.push('cat_partes', parte).then(() => {
     dispatch(sendNotification('Todo Added'));
   });
 };
