@@ -1,13 +1,12 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import AssyBarras from './assybarrasMain';
-import { _cmdaddTodo } from '../../base/acciones/mensaje.Acciones';
+import { _cmdaddTodo } from '../../base/acciones/partes.Acciones';
 
-/* const mapStateToProps = state => ({
+const mapStateToProps = state => ({
   tipo: state.alerta.tipo,
-  mensaje: state.alerta.mensaje,
-  catEstado: state.estado.catEstado
-}); */
+  mensaje: state.alerta.mensaje
+});
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -18,7 +17,7 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AssyBarras);
 
