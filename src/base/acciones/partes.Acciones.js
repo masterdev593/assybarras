@@ -1,4 +1,4 @@
-import { MENSAJE_ENVIA } from './constantes';
+import { ALERTA_SATISFACTORIA } from './constantes';
 
 export const _cmdaddTodo = parte => {
   return (dispatch, getState, getFirebase) => {
@@ -7,8 +7,8 @@ export const _cmdaddTodo = parte => {
       .push('cat_partes', parte)
       .then(() => {
         dispatch({
-          type: MENSAJE_ENVIA,
-          payload: 'OK'
+          type: ALERTA_SATISFACTORIA,
+          payload: 'Guardado'
         });
     });
   };
