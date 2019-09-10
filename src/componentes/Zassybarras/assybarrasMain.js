@@ -9,6 +9,7 @@ import Barcode from '../../componentes/barcode';
 import ReactToPrint from 'react-to-print';
 import BarcodeReader from 'react-barcode-reader';
 import _ from 'lodash';
+import Alerta from '../alerta';
 
 const styles = theme => ({
   paper: {
@@ -43,13 +44,13 @@ class AssyBarras extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value.toUpperCase()});
+    this.setState({ [e.target.name]: e.target.value.toUpperCase() });
   }
 
   handleScan(data) {
     this.setState({
       resultado: data
-    })
+    });
   }
 
   handleError(err) {
@@ -57,22 +58,21 @@ class AssyBarras extends Component {
   }
 
   handleSubmit() {
-        let datos = {
+    let datos = {
       parte: this.state.parte,
       descripcion: this.state.descripcion
     };
     this.props._cmdaddTodo(datos);
   }
   render() {
-    const { classes } = this.props;
-
+    const { classes, mensaje, tipo } = this.props;
     return (
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
               id="idnombre"
-              name='parte'
+              name="parte"
               label="Nro. de Parte"
               className={classes.textField}
               onChange={this.handleChange}
@@ -83,7 +83,7 @@ class AssyBarras extends Component {
             />
             <TextField
               id="iddescripcion"
-              name='descripcion'
+              name="descripcion"
               label="Descripción"
               className={classes.textField}
               onChange={this.handleChange}
@@ -93,7 +93,7 @@ class AssyBarras extends Component {
             />
             <TextField
               id="idpieza"
-              name='pieza'
+              name="pieza"
               label="Piezas"
               value={this.state.pieza}
               onChange={this.handleChange}
@@ -107,7 +107,7 @@ class AssyBarras extends Component {
             />
             <TextField
               id="idubicacion"
-              name='ubicacion'
+              name="ubicacion"
               label="Ubicación"
               className={classes.textField}
               onChange={this.handleChange}
@@ -117,7 +117,7 @@ class AssyBarras extends Component {
             />
             <TextField
               id="idmarca"
-              name='marca'
+              name="marca"
               label="Marca"
               className={classes.textField}
               onChange={this.handleChange}
@@ -127,7 +127,7 @@ class AssyBarras extends Component {
             />
             <TextField
               id="idorigen"
-              name='origen'
+              name="origen"
               label="Origen"
               className={classes.textField}
               onChange={this.handleChange}
@@ -163,10 +163,14 @@ class AssyBarras extends Component {
             onBeforePrint={this.handleSubmit}
           />
           <div>
-            <BarcodeReader onError={this.handleError} onScan={this.handleScan} />
+            <BarcodeReader
+              onError={this.handleError}
+              onScan={this.handleScan}
+            />
             <p>{_.replace(this.state.resultado.toUpperCase(), "'", '-')}</p>
           </div>
         </Grid>
+        {mensaje.length > 1 && <Alerta mensaje={mensaje} tipo={tipo} />}
       </Grid>
     );
   }
@@ -174,7 +178,9 @@ class AssyBarras extends Component {
 
 AssyBarras.propTypes = {
   classes: PropTypes.object.isRequired,
-  _cmdaddTodo: PropTypes.func.isRequired
+  _cmdaddTodo: PropTypes.func.isRequired,
+  tipo: PropTypes.string.isRequired,
+  mensaje: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(AssyBarras);
