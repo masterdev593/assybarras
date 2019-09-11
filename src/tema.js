@@ -17,12 +17,12 @@ const theme = createMuiTheme({
       dark: yellow[700]
     },
     error: {
-      main: red.A400,
+      main: red.A400
     },
     background: {
-      default: '#ccc',
-    },
-  },
+      default: '#ccc'
+    }
+  }
 });
 
 export default theme;

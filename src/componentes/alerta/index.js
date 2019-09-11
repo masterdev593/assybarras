@@ -55,19 +55,19 @@ function MySnackbarContent(props) {
     <SnackbarContent
       action={[
         <IconButton
-          aria-label="Close"
+          aria-label='Close'
           className={classes.close}
-          color="inherit"
-          key="close"
+          color='inherit'
+          key='close'
           onClick={onClose}
-        >
+          >
           <CloseIcon className={classes.icon} />
         </IconButton>
       ]}
-      aria-describedby="client-snackbar"
+      aria-describedby='client-snackbar'
       className={classNames(classes[variant], className)}
       message={
-        <span className={classes.message} id="client-snackbar">
+        <span className={classes.message} id='client-snackbar'>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
           {message}
         </span>
@@ -127,7 +127,7 @@ class CustomizedSnackbars extends React.Component {
           autoHideDuration={4500}
           onClose={this.handleClose}
           open={this.state.open}
-        >
+          >
           <MySnackbarContentWrapper
             message={mensaje}
             onClose={this.handleClose}

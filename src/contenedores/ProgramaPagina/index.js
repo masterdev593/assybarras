@@ -22,7 +22,7 @@ export default function ProgramaPagina() {
   return (
     <div className={classes.root}>
       <Superior />
-      <Container component="main" className={classes.main} maxWidth="md">
+      <Container className={classes.main} component='main' maxWidth='md'>
         <AssyBarras />
       </Container>
       <Inferior />

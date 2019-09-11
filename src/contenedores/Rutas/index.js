@@ -8,8 +8,8 @@ const RutasAssy = () => {
     <div>
       <Router>
         <Switch>
-          <Route component={ProgramaPagina} exact={true} path="/" />
-          <Route component={TestPagina} exact={true} path="/test" />
+          <Route component={ProgramaPagina} exact={true} path='/' />
+          <Route component={TestPagina} exact={true} path='/test' />
         </Switch>
       </Router>
     </div>

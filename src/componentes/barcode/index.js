@@ -22,7 +22,7 @@ class Barcode extends Component {
             display: 'flex',
             justifyContent: 'space-between'
           }}
-        >
+          >
           <Typography>{propDescripcion}</Typography>
           <Typography>
             {propPieza} {propUbicacion}

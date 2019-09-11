@@ -14,9 +14,9 @@ const configurarBase = preloadedState => {
     authDomain: secretos.firebase.authDomain,
     databaseURL: secretos.firebase.databaseURL,
     projectId: secretos.firebase.projectId,
-    storageBucket: "",
+    storageBucket: '',
     messagingSenderId: secretos.firebase.messagingSenderId,
-    appId: secretos.firebase.appId,
+    appId: secretos.firebase.appId
   };
 
   firebase.initializeApp(firebaseConfig);

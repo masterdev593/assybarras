@@ -65,27 +65,27 @@ const useStyles = makeStyles(theme => ({
 const SuperiorMain = () => {
   const classes = useStyles();
   return (
-    <AppBar position="static" style={{ borderBottom: '3px solid #ffde31' }}>
+    <AppBar position='static' style={{ borderBottom: '3px solid #ffde31' }}>
       <Toolbar style={{ justifyContent: 'space-around' }}>
-        <img src={logo} alt="IDF" className={classes.logo} />
+        <img alt='IDF' className={classes.logo} src={logo} />
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Buscar..."
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput
             }}
             inputProps={{ 'aria-label': 'buscar' }}
+            placeholder='Buscar...'
           />
         </div>
         <div className={classes.title}>
-          <Button color="secondary" component={Link} to='./'>Etiquetas</Button>
-          <Button color="secondary" component={Link} to='./test'>Ventas</Button>
-          <Button color="secondary" component={Link} to='./test'>Notas de Entrega</Button>
-          <Button color="secondary" component={Link} to='./test'>Talleres</Button>
+          <Button color='secondary' component={Link} to='./'>Etiquetas</Button>
+          <Button color='secondary' component={Link} to='./test'>Ventas</Button>
+          <Button color='secondary' component={Link} to='./test'>Notas de Entrega</Button>
+          <Button color='secondary' component={Link} to='./test'>Talleres</Button>
         </div>
       </Toolbar>
     </AppBar>

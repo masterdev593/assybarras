@@ -2,6 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import AssyBarras from './assybarrasMain';
 import { _cmdaddTodo } from '../../base/acciones/partes.Acciones';
+import { _cmdlimpioAlerta } from '../../base/acciones/alerta.Acciones';
 
 const mapStateToProps = state => ({
   tipo: state.alerta.tipo,
@@ -11,7 +12,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      _cmdaddTodo
+      _cmdaddTodo,
+      _cmdlimpioAlerta
     },
     dispatch
   );
