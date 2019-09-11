@@ -75,8 +75,6 @@ class AssyBarras extends Component {
         <Grid item sm={6} xs={12}>
           <form autoComplete='off' className={classes.container} noValidate>
             <TextField
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={true}
               className={classes.textField}
               id='idnombre'
               label='Nro. de Parte'
