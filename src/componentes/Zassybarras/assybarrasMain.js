@@ -43,6 +43,10 @@ class AssyBarras extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props._cmdlimpioAlerta();
+  }
+
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value.toUpperCase() });
   }
@@ -68,99 +72,100 @@ class AssyBarras extends Component {
     const { classes, mensaje, tipo } = this.props;
     return (
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <form className={classes.container} noValidate autoComplete="off">
+        <Grid item sm={6} xs={12}>
+          <form autoComplete='off' className={classes.container} noValidate>
             <TextField
-              id="idnombre"
-              name="parte"
-              label="Nro. de Parte"
-              className={classes.textField}
-              onChange={this.handleChange}
-              value={this.state.parte.toUpperCase()}
-              margin="normal"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={true}
+              className={classes.textField}
+              id='idnombre'
+              label='Nro. de Parte'
+              margin='normal'
+              name='parte'
+              onChange={this.handleChange}
               required={true}
+              value={this.state.parte.toUpperCase()}
             />
             <TextField
-              id="iddescripcion"
-              name="descripcion"
-              label="Descripción"
               className={classes.textField}
+              id='iddescripcion'
+              label='Descripción'
+              margin='normal'
+              name='descripcion'
               onChange={this.handleChange}
+              required={true}
               value={this.state.descripcion.toUpperCase()}
-              margin="normal"
-              required={true}
             />
             <TextField
-              id="idpieza"
-              name="pieza"
-              label="Piezas"
-              value={this.state.pieza}
-              onChange={this.handleChange}
-              type="number"
               className={classes.textField}
+              id='idpieza'
               InputLabelProps={{
                 shrink: true
               }}
-              margin="normal"
+              label='Piezas'
+              margin='normal'
+              name='pieza'
+              onChange={this.handleChange}
               required={true}
+              type='number'
+              value={this.state.pieza}
             />
             <TextField
-              id="idubicacion"
-              name="ubicacion"
-              label="Ubicación"
               className={classes.textField}
+              id='idubicacion'
+              label='Ubicación'
+              margin='normal'
+              name='ubicacion'
               onChange={this.handleChange}
+              required={true}
               value={this.state.ubicacion.toUpperCase()}
-              margin="normal"
-              required={true}
             />
             <TextField
-              id="idmarca"
-              name="marca"
-              label="Marca"
               className={classes.textField}
+              id='idmarca'
+              label='Marca'
+              margin='normal'
+              name='marca'
               onChange={this.handleChange}
+              required={true}
               value={this.state.marca.toUpperCase()}
-              margin="normal"
-              required={true}
             />
             <TextField
-              id="idorigen"
-              name="origen"
-              label="Origen"
               className={classes.textField}
+              id='idorigen'
+              label='Origen'
+              margin='normal'
+              name='origen'
               onChange={this.handleChange}
-              value={this.state.origen.toUpperCase()}
-              margin="normal"
               required={true}
+              value={this.state.origen.toUpperCase()}
             />
           </form>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
             <Barcode
-              propParte={this.state.parte.toUpperCase()}
               propDescripcion={this.state.descripcion.toUpperCase()}
-              propPieza={this.state.pieza}
-              propUbicacion={this.state.ubicacion.toUpperCase()}
               propMarca={this.state.marca.toUpperCase()}
               propOrigen={this.state.origen.toUpperCase()}
+              propParte={this.state.parte.toUpperCase()}
+              propPieza={this.state.pieza}
+              propUbicacion={this.state.ubicacion.toUpperCase()}
               ref={el => (this.componentRef = el)}
             />
           </Paper>
           <ReactToPrint
+            content={() => this.componentRef}
+            onBeforePrint={this.handleSubmit}
             trigger={() => (
               <Button
-                color="secondary"
-                variant="contained"
+                color='secondary'
                 style={{ margin: '2rem 0' }}
-              >
+                variant='contained'
+                >
                 Imprimir
               </Button>
             )}
-            content={() => this.componentRef}
-            onBeforePrint={this.handleSubmit}
           />
           <div>
             <BarcodeReader
@@ -179,6 +184,7 @@ class AssyBarras extends Component {
 AssyBarras.propTypes = {
   classes: PropTypes.object.isRequired,
   _cmdaddTodo: PropTypes.func.isRequired,
+  _cmdlimpioAlerta: PropTypes.func.isRequired,
   tipo: PropTypes.string.isRequired,
   mensaje: PropTypes.string.isRequired
 };
