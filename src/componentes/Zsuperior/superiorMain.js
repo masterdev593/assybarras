@@ -7,6 +7,8 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import logo from '../../recursos/logo.png';
 import { Link } from 'react-router-dom';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
 const useStyles = makeStyles(theme => ({
   search: {
@@ -64,10 +66,58 @@ const useStyles = makeStyles(theme => ({
 
 const SuperiorMain = () => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  function handleMenu(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
   return (
     <AppBar position='static' style={{ borderBottom: '3px solid #ffde31' }}>
       <Toolbar style={{ justifyContent: 'space-around' }}>
         <img alt='IDF' className={classes.logo} src={logo} />
+        <div className={classes.title}>
+          <Button color='secondary' component={Link} to='./'>
+            Etiquetas
+          </Button>
+          <Button
+            aria-controls='menu-appbar'
+            aria-haspopup='true'
+            aria-label='account of current user'
+            color='secondary'
+            onClick={handleMenu}
+            >
+            HHP
+          </Button>
+          <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+            id='menu-appbar'
+            keepMounted
+            onClose={handleClose}
+            open={open}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+            >
+            <MenuItem component={Link} onClick={handleClose} to='./test'>Inventario</MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./test'>Talleres</MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./test'>Ventas</MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./test'>Notas de Entrega</MenuItem>
+          </Menu>
+          <Button color='secondary' component={Link} to='./test'>
+            Protection Pro
+          </Button>
+        </div>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
@@ -80,12 +130,6 @@ const SuperiorMain = () => {
             inputProps={{ 'aria-label': 'buscar' }}
             placeholder='Buscar...'
           />
-        </div>
-        <div className={classes.title}>
-          <Button color='secondary' component={Link} to='./'>Etiquetas</Button>
-          <Button color='secondary' component={Link} to='./test'>Ventas</Button>
-          <Button color='secondary' component={Link} to='./test'>Notas de Entrega</Button>
-          <Button color='secondary' component={Link} to='./test'>Talleres</Button>
         </div>
       </Toolbar>
     </AppBar>
