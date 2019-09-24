@@ -1,14 +1,37 @@
-/* eslint-disable max-len */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 
-const TestPagina = () => {
+function Todos({ partez }) {
+  if (!isLoaded(partez)) {
+    return <div>Loading...</div>;
+  }
+  if (isEmpty(partez)) {
+    return <div>Todos List Is Empty</div>;
+  }
+
   return (
     <div>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam temporibus nam alias, soluta recusandae itaque dolorum eius repellat laboriosam possimus ipsum magnam vel accusantium blanditiis ad voluptatum necessitatibus eveniet impedit.
-      Soluta ratione provident accusamus! Sed iure optio expedita eveniet, assumenda natus atque repellendus sit maxime quidem asperiores aliquam, architecto molestias harum, officiis vero at quibusdam voluptatum impedit mollitia sunt odio.
-      Itaque beatae nulla, aut dicta dolore quod quos quas labore necessitatibus excepturi quibusdam voluptatum nihil dolorum natus in cumque! Aperiam mollitia laborum explicabo aliquid quas accusantium sunt quam temporibus consequuntur!</p>
+      <h1>partsssses</h1>
+      <div>
+        {JSON.stringify(partez, null, 2)}
+      </div>
     </div>
   );
+}
+
+const enhance = compose(
+  firebaseConnect(() => [{ path: 'partez' }]),
+  connect(state => ({
+    partez: state.firebase.data.partez
+  }))
+);
+
+Todos.propTypes = {
+  firebase: PropTypes.object.isRequired,
+  partez: PropTypes.object
 };
 
-export default TestPagina;
+export default enhance(Todos);
