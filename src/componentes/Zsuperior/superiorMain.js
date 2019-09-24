@@ -67,14 +67,24 @@ const useStyles = makeStyles(theme => ({
 const SuperiorMain = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
   const open = Boolean(anchorEl);
+  const open2 = Boolean(anchorEl2);
 
-  function handleMenu(event) {
+  function handleMenuHhp(event) {
     setAnchorEl(event.currentTarget);
+  }
+
+  function handleMenuProtectionPro(event) {
+    setAnchorEl2(event.currentTarget);
   }
 
   function handleClose() {
     setAnchorEl(null);
+  }
+
+  function handleClose2() {
+    setAnchorEl2(null);
   }
 
   return (
@@ -90,7 +100,7 @@ const SuperiorMain = () => {
             aria-haspopup='true'
             aria-label='account of current user'
             color='secondary'
-            onClick={handleMenu}
+            onClick={handleMenuHhp}
             >
             HHP
           </Button>
@@ -109,14 +119,47 @@ const SuperiorMain = () => {
               horizontal: 'right'
             }}
             >
-            <MenuItem component={Link} onClick={handleClose} to='./test'>Inventario</MenuItem>
-            <MenuItem component={Link} onClick={handleClose} to='./test'>Talleres</MenuItem>
-            <MenuItem component={Link} onClick={handleClose} to='./test'>Ventas</MenuItem>
-            <MenuItem component={Link} onClick={handleClose} to='./test'>Notas de Entrega</MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./inventariohhp'>
+              Inventario
+            </MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./test'>
+              Talleres
+            </MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./test'>
+              Ventas
+            </MenuItem>
+            <MenuItem component={Link} onClick={handleClose} to='./test'>
+              Notas de Entrega
+            </MenuItem>
           </Menu>
-          <Button color='secondary' component={Link} to='./test'>
+          <Button
+            aria-controls='menu-protection'
+            aria-haspopup='true'
+            aria-label='account of current user'
+            color='secondary'
+            onClick={handleMenuProtectionPro}
+            >
             Protection Pro
           </Button>
+          <Menu
+            anchorEl={anchorEl2}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left'
+            }}
+            id='menu-protection'
+            keepMounted
+            onClose={handleClose2}
+            open={open2}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left'
+            }}
+            >
+            <MenuItem component={Link} onClick={handleClose2} to='./inventariopro'>
+              Inventario
+            </MenuItem>
+          </Menu>
         </div>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
