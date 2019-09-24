@@ -68,6 +68,13 @@ class AssyBarras extends Component {
     };
     this.props._cmdaddTodo(datos);
   }
+
+  /*   testPush = () => {
+    this.props.firebase.push('todos', { some: 'data' }).then(() => {
+      this.setState({ wasSent: true });
+    });
+  }; */
+
   render() {
     const { classes, mensaje, tipo } = this.props;
     return (
@@ -184,7 +191,8 @@ AssyBarras.propTypes = {
   _cmdaddTodo: PropTypes.func.isRequired,
   _cmdlimpioAlerta: PropTypes.func.isRequired,
   tipo: PropTypes.string.isRequired,
-  mensaje: PropTypes.string.isRequired
+  mensaje: PropTypes.string.isRequired,
+  partes: PropTypes.array
 };
 
 export default withStyles(styles)(AssyBarras);
