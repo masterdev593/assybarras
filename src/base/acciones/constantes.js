@@ -4,3 +4,5 @@ export const ALERTA_ERROR = 'alerta/ALERTA_ERROR';
 export const ALERTA_ADVERTENCIA = 'alerta/ALERTA_ADVERTENCIA';
 export const ALERTA_INFO = 'alerta/ALERTA_INFO';
 export const ALERTA_LIMPIAR = 'alerta/ALERTA_LIMPIAR';
+// Partes
+export const FETCH_TODOS = 'partes/FETCH_TODOS';
