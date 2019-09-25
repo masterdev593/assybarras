@@ -10,6 +10,7 @@ import ReactToPrint from 'react-to-print';
 import BarcodeReader from 'react-barcode-reader';
 import _ from 'lodash';
 import Alerta from '../alerta';
+// TODO: Validar campos de texto al presionar el boton imprimir
 
 const styles = theme => ({
   paper: {
@@ -35,7 +36,9 @@ class AssyBarras extends Component {
       ubicacion: '',
       marca: 'SAMSUNG',
       origen: 'KOREA',
-      resultado: ''
+      resultado: '',
+      helpText: '',
+      error: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleScan = this.handleScan.bind(this);
@@ -69,12 +72,6 @@ class AssyBarras extends Component {
     this.props._cmdaddTodo(datos);
   }
 
-  /*   testPush = () => {
-    this.props.firebase.push('todos', { some: 'data' }).then(() => {
-      this.setState({ wasSent: true });
-    });
-  }; */
-
   render() {
     const { classes, mensaje, tipo } = this.props;
     return (
@@ -83,11 +80,13 @@ class AssyBarras extends Component {
           <form autoComplete='off' className={classes.container} noValidate>
             <TextField
               className={classes.textField}
+              error={this.state.parte === ''}
+              helperText={this.state.parte === '' ? 'Necesario' : ' '}
               id='idnombre'
               label='Nro. de Parte'
               margin='normal'
               name='parte'
-              onChange={this.handleChange}
+              onChange={event => this.setState({ parte: event.target.value })}
               required={true}
               value={this.state.parte.toUpperCase()}
             />
