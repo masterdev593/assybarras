@@ -4,34 +4,37 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 
-function Todos({ partez }) {
+function Partes({ partez }) {
   if (!isLoaded(partez)) {
-    return <div>Loading...</div>;
+    return <div>Cargando...</div>;
   }
   if (isEmpty(partez)) {
-    return <div>Todos List Is Empty</div>;
+    return <div>Partes esta vacia</div>;
   }
 
+  const var1 = Object.keys(partez).map((key, id) => (
+    <li id={id} key={key}>
+      {partez[key].parte} + {partez[key].descripcion}
+    </li>
+  ));
   return (
     <div>
-      <h1>partsssses</h1>
-      <div>
-        {JSON.stringify(partez, null, 2)}
-      </div>
+      <h1>Partes</h1>
+      <ol>{var1}</ol>
     </div>
   );
 }
 
 const enhance = compose(
-  firebaseConnect(() => [{ path: 'partez' }]),
+  firebaseConnect(['partez']),
   connect(state => ({
     partez: state.firebase.data.partez
   }))
 );
 
-Todos.propTypes = {
+Partes.propTypes = {
   firebase: PropTypes.object.isRequired,
   partez: PropTypes.object
 };
 
-export default enhance(Todos);
+export default enhance(Partes);
