@@ -84,9 +84,9 @@ class AssyBarras extends Component {
               helperText={this.state.parte === '' ? 'Necesario' : ' '}
               id='idnombre'
               label='Nro. de Parte'
-              margin='normal'
+              margin='dense'
               name='parte'
-              onChange={event => this.setState({ parte: event.target.value })}
+              onChange={this.handleChange}
               required={true}
               value={this.state.parte.toUpperCase()}
             />
@@ -94,7 +94,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='iddescripcion'
               label='Descripción'
-              margin='normal'
+              margin='dense'
               name='descripcion'
               onChange={this.handleChange}
               required={true}
@@ -107,7 +107,7 @@ class AssyBarras extends Component {
                 shrink: true
               }}
               label='Piezas'
-              margin='normal'
+              margin='dense'
               name='pieza'
               onChange={this.handleChange}
               required={true}
@@ -118,7 +118,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='idubicacion'
               label='Ubicación'
-              margin='normal'
+              margin='dense'
               name='ubicacion'
               onChange={this.handleChange}
               required={true}
@@ -128,7 +128,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='idmarca'
               label='Marca'
-              margin='normal'
+              margin='dense'
               name='marca'
               onChange={this.handleChange}
               required={true}
@@ -138,7 +138,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='idorigen'
               label='Origen'
-              margin='normal'
+              margin='dense'
               name='origen'
               onChange={this.handleChange}
               required={true}
