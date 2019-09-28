@@ -119,7 +119,7 @@ const SuperiorMain = () => {
               horizontal: 'right'
             }}
             >
-            <MenuItem component={Link} onClick={handleClose} to='./inventariohhp'>
+            <MenuItem component={Link} onClick={handleClose} to='./hhp'>
               Inventario
             </MenuItem>
             <MenuItem component={Link} onClick={handleClose} to='./test'>
