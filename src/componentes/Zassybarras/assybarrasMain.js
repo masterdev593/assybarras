@@ -84,7 +84,7 @@ class AssyBarras extends Component {
               helperText={this.state.parte === '' ? 'Necesario' : ' '}
               id='idnombre'
               label='Nro. de Parte'
-              margin='dense'
+              margin='normal'
               name='parte'
               onChange={this.handleChange}
               required={true}
@@ -94,7 +94,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='iddescripcion'
               label='Descripción'
-              margin='dense'
+              margin='normal'
               name='descripcion'
               onChange={this.handleChange}
               required={true}
@@ -107,7 +107,7 @@ class AssyBarras extends Component {
                 shrink: true
               }}
               label='Piezas'
-              margin='dense'
+              margin='normal'
               name='pieza'
               onChange={this.handleChange}
               required={true}
@@ -118,7 +118,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='idubicacion'
               label='Ubicación'
-              margin='dense'
+              margin='normal'
               name='ubicacion'
               onChange={this.handleChange}
               required={true}
@@ -128,7 +128,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='idmarca'
               label='Marca'
-              margin='dense'
+              margin='normal'
               name='marca'
               onChange={this.handleChange}
               required={true}
@@ -138,7 +138,7 @@ class AssyBarras extends Component {
               className={classes.textField}
               id='idorigen'
               label='Origen'
-              margin='dense'
+              margin='normal'
               name='origen'
               onChange={this.handleChange}
               required={true}
