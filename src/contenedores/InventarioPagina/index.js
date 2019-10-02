@@ -3,7 +3,7 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Inferior from '../../componentes/inferior';
 import Superior from '../../componentes/Zsuperior';
-import Inventario from '../../componentes/Zinventario';
+import Inventario from '../../componentes/Zinventario2';
 
 const useStyles = makeStyles(theme => ({
   root: {
