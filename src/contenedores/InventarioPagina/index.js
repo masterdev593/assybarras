@@ -1,5 +1,5 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+// import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Inferior from '../../componentes/inferior';
 import Superior from '../../componentes/Zsuperior';
@@ -22,9 +22,7 @@ export default function ProgramaPagina() {
   return (
     <div className={classes.root}>
       <Superior />
-      <Container className={classes.main} component='main' maxWidth='md'>
         <Inventario />
-      </Container>
       <Inferior />
     </div>
   );
