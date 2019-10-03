@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#ffde31'
+    color: theme.palette.secondary.main
   },
   inputRoot: {
     color: 'inherit'
@@ -61,6 +61,10 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'block'
     }
+  },
+  border: {
+    borderBottom: '3px solid',
+    borderBottomColor: theme.palette.secondary.main
   }
 }));
 
@@ -88,7 +92,7 @@ const SuperiorMain = () => {
   }
 
   return (
-    <AppBar position='static' style={{ borderBottom: '3px solid #ffde31' }}>
+    <AppBar className={classes.border} position='static'>
       <Toolbar style={{ justifyContent: 'space-around' }}>
         <img alt='IDF' className={classes.logo} src={logo} />
         <div className={classes.title}>
