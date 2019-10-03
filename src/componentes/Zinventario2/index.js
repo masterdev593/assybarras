@@ -6,7 +6,7 @@ import { _cmdlimpioAlerta } from '../../base/acciones/alerta.Acciones';
 import { firebaseConnect } from 'react-redux-firebase';
 
 const mapStateToProps = state => ({
-  partez: state.firebase.ordered.partez,
+  partez: state.firebase.data.partez,
   tipo: state.alerta.tipo,
   mensaje: state.alerta.mensaje
 });
