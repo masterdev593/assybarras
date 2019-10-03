@@ -4,14 +4,15 @@ import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   footer: {
     padding: '30px 0 !important',
-    borderTop: '3px solid #ffde31',
+    borderTop: '3px solid',
+    borderTopColor: theme.palette.secondary.main,
     marginTop: 'auto',
-    backgroundColor: '#000'
+    backgroundColor: theme.palette.primary.main
   }
-});
+}));
 
 export default function Inferior() {
   const classes = useStyles();
