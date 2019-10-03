@@ -7,11 +7,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
+import { isLoaded, isEmpty } from 'react-redux-firebase/lib/helpers';
+import Loader from '../loader';
+import Alerta from '../alerta';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    color: theme.palette.secondary.main
   },
   body: {
     fontSize: 14
@@ -26,22 +29,9 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow);
 
-/* function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-} */
-
-/* const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-]; */
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({
   root: {
     width: '100%',
-    marginTop: theme.spacing(3),
     overflowX: 'auto'
   },
   table: {
@@ -49,31 +39,38 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CustomizedTables(props) {
+
+export default function CustomizedTables({ partez }) {
   const classes = useStyles();
-const parte = props.partez;
-console.log('====================================');
-console.log(parte);
-console.log('====================================');
+  if (!isLoaded(partez)) {
+    return <Loader />;
+  }
+  if (isEmpty(partez)) {
+    return <Alerta mensaje='BDD sin registros' tipo='warning' />;
+  }
+  const total = Object.keys(partez);
 
   return (
     <Paper className={classes.root}>
+      <Alerta mensaje={total.length + ' partes cargadas'} tipo='info' />
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-          <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align='right'>Calories</StyledTableCell>
-            <StyledTableCell align='right'>Fat&nbsp;(g)</StyledTableCell>
+            <StyledTableCell >NÚMERO DE PARTE</StyledTableCell>
+            <StyledTableCell align='right'>DESCRIPCIÓN</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-        <StyledTableRow key={1}>
-              <StyledTableCell component='th' scope='row'>
-                c
-              </StyledTableCell>
-              <StyledTableCell align='right'>a</StyledTableCell>
-              <StyledTableCell align='right'>b</StyledTableCell>
-            </StyledTableRow>
+          {
+            Object.keys(partez).map((key, id) => (
+              <StyledTableRow id={id} key={key}>
+                <StyledTableCell component='th' scope='row'>
+                  {partez[key].parte}
+                </StyledTableCell>
+                <StyledTableCell align='right'>{partez[key].descripcion}</StyledTableCell>
+              </StyledTableRow>
+            ))
+          }
         </TableBody>
       </Table>
     </Paper>
@@ -81,6 +78,7 @@ console.log('====================================');
 }
 
 CustomizedTables.propTypes = {
-  firebase: PropTypes.object.isRequired,
-  partez: PropTypes.array
+  tipo: PropTypes.string.isRequired,
+  mensaje: PropTypes.string.isRequired,
+  partez: PropTypes.object
 };
