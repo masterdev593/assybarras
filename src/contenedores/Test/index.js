@@ -1,40 +1,60 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { Field, reduxForm } from 'redux-form';
+// core
+import TextField from '@material-ui/core/TextField';
+/* import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import Checkbox from 'material-ui/Checkbox';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem'; */
+// import asyncValidate from './asyncValidate';
+import validate from '../../componentes/assybarrasForm/validate';
 
-function Partes({ partez }) {
-  if (!isLoaded(partez)) {
-    return <div>Cargando...</div>;
-  }
-  if (isEmpty(partez)) {
-    return <div>Partes esta vacia</div>;
-  }
-
-  const var1 = Object.keys(partez).map((key, id) => (
-    <li id={id} key={key}>
-      {partez[key].parte} + {partez[key].descripcion}
-    </li>
-  ));
-  return (
-    <div>
-      <h1>Partes</h1>
-      <ol>{var1}</ol>
-    </div>
+const renderTextField = (
+  { input, label, meta: { touched, error }, ...custom }
+) => (
+    <TextField
+      errorText={touched && error}
+      floatingLabelText={label}
+      hintText={label}
+      {...input}
+      {...custom}
+    />
   );
-}
 
-const enhance = compose(
-  firebaseConnect(['partez']),
-  connect(state => ({
-    partez: state.firebase.data.partez
-  }))
-);
-
-Partes.propTypes = {
-  firebase: PropTypes.object.isRequired,
-  partez: PropTypes.object
+const MaterialUiForm = props => {
+  const { handleSubmit, pristine, reset, submitting } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <Field component={renderTextField} label='First Name' name='firstName' />
+      </div>
+      <div>
+        <Field component={renderTextField} label='Last Name' name='lastName' />
+      </div>
+      <div>
+        <Field component={renderTextField} label='Email' name='email' />
+      </div>
+      <div>
+        <Field
+          component={renderTextField}
+          label='Notes'
+          multiLine={true}
+          name='notes'
+          rows={2}
+        />
+      </div>
+      <div>
+        <button disabled={pristine || submitting} type='submit'>Submit</button>
+        <button disabled={pristine || submitting} onClick={reset} type='button'>
+          Clear Values
+        </button>
+      </div>
+    </form>
+  );
 };
 
-export default enhance(Partes);
+export default reduxForm({
+  form: 'MaterialUiForm',
+  validate
+})(MaterialUiForm);
