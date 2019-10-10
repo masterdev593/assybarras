@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import showResults from './showResults';
+// import TextField from '@material-ui/core/TextField';
+import MaterialUiForm from '../assybarrasForm';
 import Button from '@material-ui/core/Button';
 import Barcode from '../../componentes/barcode';
 import ReactToPrint from 'react-to-print';
@@ -77,74 +79,9 @@ class AssyBarras extends Component {
     return (
       <Grid container spacing={3}>
         <Grid item sm={6} xs={12}>
-          <form autoComplete='off' className={classes.container} noValidate>
-            <TextField
-              className={classes.textField}
-              error={this.state.parte === ''}
-              helperText={this.state.parte === '' ? 'Necesario' : ' '}
-              id='idnombre'
-              label='Nro. de Parte'
-              margin='normal'
-              name='parte'
-              onChange={this.handleChange}
-              required={true}
-              value={this.state.parte.toUpperCase()}
-            />
-            <TextField
-              className={classes.textField}
-              id='iddescripcion'
-              label='Descripción'
-              margin='normal'
-              name='descripcion'
-              onChange={this.handleChange}
-              required={true}
-              value={this.state.descripcion.toUpperCase()}
-            />
-            <TextField
-              className={classes.textField}
-              id='idpieza'
-              InputLabelProps={{
-                shrink: true
-              }}
-              label='Piezas'
-              margin='normal'
-              name='pieza'
-              onChange={this.handleChange}
-              required={true}
-              type='number'
-              value={this.state.pieza}
-            />
-            <TextField
-              className={classes.textField}
-              id='idubicacion'
-              label='Ubicación'
-              margin='normal'
-              name='ubicacion'
-              onChange={this.handleChange}
-              required={true}
-              value={this.state.ubicacion.toUpperCase()}
-            />
-            <TextField
-              className={classes.textField}
-              id='idmarca'
-              label='Marca'
-              margin='normal'
-              name='marca'
-              onChange={this.handleChange}
-              required={true}
-              value={this.state.marca.toUpperCase()}
-            />
-            <TextField
-              className={classes.textField}
-              id='idorigen'
-              label='Origen'
-              margin='normal'
-              name='origen'
-              onChange={this.handleChange}
-              required={true}
-              value={this.state.origen.toUpperCase()}
-            />
-          </form>
+          <MaterialUiForm error={this.state.error}
+            helpText={this.state.helpText} onSubmit={showResults}
+          />
         </Grid>
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
