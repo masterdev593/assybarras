@@ -1,25 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
-import Form from './assyBarrasFormMain';
+import BarrasFormMain from './assyBarrasFormMain';
 import * as Yup from 'yup';
-
-const styles = theme => ({
-  paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 5}px ${theme
-      .spacing.unit * 5}px`
-  },
-  container: {
-    maxWidth: '200px'
-  }
-});
 
 const validationSchema = Yup.object({
   name: Yup.string('Enter a name').required('Name is required'),
@@ -46,14 +28,13 @@ class InputForm extends Component {
     console.log(data);
   };
   render() {
-    const { classes } = this.props;
     const values = { name: 'GH', email: '', confirmPassword: '', password: '', cantidad: 23 };
     return (
       <React.Fragment>
         <Formik
           initialValues={values}
           onSubmit={this.submit}
-          render={props => <Form {...props} />}
+          render={props => <BarrasFormMain {...props} />}
           validationSchema={validationSchema}
         />
       </React.Fragment>
@@ -61,8 +42,4 @@ class InputForm extends Component {
   }
 }
 
-InputForm.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(InputForm);
+export default InputForm;
