@@ -1,12 +1,9 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import NameIcon from '@material-ui/icons/SupervisorAccount';
 import LockIcon from '@material-ui/icons/Lock';
-import EmailIcon from '@material-ui/icons/Email';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
@@ -17,7 +14,7 @@ const styles = theme => ({
   }
 });
 
-const Form = props => {
+const BarrasFormMain = props => {
   const {
     values: { name, email, password, confirmPassword, cantidad },
     errors,
@@ -25,16 +22,15 @@ const Form = props => {
     handleSubmit,
     handleChange,
     isValid,
-    setFieldTouched,
     classes
   } = props;
   console.table(props);
 
-  const change = (name, e) => {
+/*   const change = (name, e) => {
     e.persist();
     handleChange(e);
     setFieldTouched(name, true, false);
-  };
+  }; */
   return (
     <form onSubmit={handleSubmit}>
       <TextField
@@ -112,4 +108,15 @@ const Form = props => {
   );
 };
 
-export default withStyles(styles)(Form);
+BarrasFormMain.propTypes = {
+  classes: PropTypes.object.isRequired,
+  values: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+  isValid: PropTypes.bool.isRequired,
+  touched: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired
+
+};
+
+export default withStyles(styles)(BarrasFormMain);
