@@ -1,60 +1,75 @@
-/* eslint-disable react/prop-types */
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-// core
-import TextField from '@material-ui/core/TextField';
-/* import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-import Checkbox from 'material-ui/Checkbox';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem'; */
-// import asyncValidate from './asyncValidate';
-import validate from '../../componentes/assybarrasForm/validate';
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import { FormikTextField } from 'formik-material-fields';
 
-const renderTextField = (
-  { input, label, meta: { touched, error }, ...custom }
-) => (
-    <TextField
-      errorText={touched && error}
-      floatingLabelText={label}
-      hintText={label}
-      {...input}
-      {...custom}
-    />
-  );
+Yup.setLocale({
+  mixed: {
+    required: 'Requerido'
+  },
+  number: {
+    min: 'Debe ser mayor que ${min}'
+  }
+});
 
-const MaterialUiForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props;
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <Field component={renderTextField} label='First Name' name='firstName' />
-      </div>
-      <div>
-        <Field component={renderTextField} label='Last Name' name='lastName' />
-      </div>
-      <div>
-        <Field component={renderTextField} label='Email' name='email' />
-      </div>
-      <div>
-        <Field
-          component={renderTextField}
-          label='Notes'
-          multiLine={true}
-          name='notes'
-          rows={2}
-        />
-      </div>
-      <div>
-        <button disabled={pristine || submitting} type='submit'>Submit</button>
-        <button disabled={pristine || submitting} onClick={reset} type='button'>
-          Clear Values
-        </button>
-      </div>
-    </form>
-  );
+let validationSchema = Yup.object().shape({
+  username: Yup.string().uppercase(),
+  edad: Yup.number()
+    .min(18)
+    .required()
+    .positive()
+    .integer()
+});
+
+validationSchema.validate({ username: 'jimmy', edad: 11}).catch(function(err) {
+  // eslint-disable-next-line no-unused-expressions
+  err.username;
+  // eslint-disable-next-line no-unused-expressions
+  err.errors;
+});
+
+const initialValues = {
+  username: ''
 };
 
-export default reduxForm({
-  form: 'MaterialUiForm',
-  validate
-})(MaterialUiForm);
+const onSubmit = (values, actions) => {
+  // this could also easily use props or other
+  // local state to alter the behavior if needed
+  // this.props.sendValuesToServer(values)
+
+  setTimeout(() => {
+    // eslint-disable-next-line no-alert
+    alert(JSON.stringify(values, null, 2));
+    actions.setSubmitting(false);
+  }, 1000);
+};
+
+class MyForm extends Component {
+  render() {
+    return (
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+        >
+        {({ isValid }) => (
+          <Form autoComplete='off'>
+            <FormikTextField
+              label='Nombre'
+              margin='normal'
+              name='username'
+            />
+            <FormikTextField
+              label='Edad'
+              margin='normal'
+              name='edad'
+            />
+          </Form>
+        )}
+      </Formik>
+    );
+  }
+}
+
+export default MyForm;
