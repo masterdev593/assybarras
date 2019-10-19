@@ -37,9 +37,7 @@ class AssyBarras extends Component {
       ubicacion: '',
       marca: 'SAMSUNG',
       origen: 'KOREA',
-      resultado: '',
-      helpText: '',
-      error: false
+      resultado: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleScan = this.handleScan.bind(this);
