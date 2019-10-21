@@ -24,8 +24,6 @@ const BarrasFormMain = props => {
     isValid,
     classes
   } = props;
-  console.table(props);
-
 /*   const change = (name, e) => {
     e.persist();
     handleChange(e);
