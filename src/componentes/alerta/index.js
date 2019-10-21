@@ -117,11 +117,12 @@ class CustomizedSnackbars extends React.Component {
 
   render() {
     const { tipo, mensaje } = this.props;
+    console.table(this.props);
     return (
       <div>
         <Snackbar
           anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'top',
             horizontal: 'right'
           }}
           autoHideDuration={4500}
