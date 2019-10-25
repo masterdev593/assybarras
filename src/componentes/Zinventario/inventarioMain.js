@@ -1,103 +1,81 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import { isLoaded, isEmpty } from 'react-redux-firebase';
-import { DataGrid } from 'tubular-react';
-import {
-  AggregateFunctions,
-  ColumnDataType,
-  ColumnModel,
-  ColumnSortDirection
-} from 'tubular-common';
+import { isLoaded, isEmpty } from 'react-redux-firebase/lib/helpers';
+import Loader from '../loader';
+import Alerta from '../alerta';
 
-const columns = [
-  new ColumnModel('OrderID', {
-    DataType: ColumnDataType.NUMERIC,
-    Filterable: true,
-    IsKey: true,
-    Label: 'Id',
-    SortDirection: ColumnSortDirection.ASCENDING,
-    SortOrder: 1,
-    Sortable: true
-  }),
-  new ColumnModel('CustomerName', {
-    Aggregate: AggregateFunctions.COUNT,
-    Filterable: true,
-    Searchable: true,
-    Sortable: true
-  }),
-  new ColumnModel('ShippedDate', {
-    DataType: ColumnDataType.DATE_TIME,
-    Filterable: true,
-    Sortable: true
-  }),
-  new ColumnModel('ShipperCity'),
-  new ColumnModel('Amount', {
-    DataType: ColumnDataType.NUMERIC,
-    Sortable: true
-  }),
-  new ColumnModel('IsShipped', {
-    DataType: ColumnDataType.BOOLEAN,
-    Filterable: true,
-    Sortable: true
-  })
-];
-
-const localData = [
-  {
-    OrderID: 1,
-    CustomerName: 'Microsoft',
-    ShippedDate: '2016-03-19T19:00:00',
-    ShipperCity: 'Guadalajara, JAL, Mexico',
-    Amount: 300.00
+const StyledTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.secondary.main
   },
-  {
-    OrderID: 2,
-    CustomerName: 'Microsoft',
-    ShippedDate: '2016-11-08T18:00:00',
-    ShipperCity: 'Los Angeles, CA, USA',
-    Amount: 9.00
+  body: {
+    fontSize: 14
   }
-];
+}))(TableCell);
 
-
-/* function valuesToArray(obj) {
-  return Object.keys(obj).map(function (key) { return obj[key]; });
-} */
-
-class Inventario extends Component {
-  render() {
-    const { partez } = this.props;
-    if (!isLoaded(partez)) {
-      return <div>Cargando...</div>;
+const StyledTableRow = withStyles(theme => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default
     }
-    if (isEmpty(partez)) {
-      return <div>Partes esta vacia</div>;
-    }
-
-    const peopleArray = Object.values(partez);
-    console.log(peopleArray);
-
-    const var1 = peopleArray.map((key) => (
-      key
-    ));
-    console.log(var1);
-
-    return (
-      <div>
-        <h1>HHP</h1>
-        <DataGrid
-          columns={columns}
-          dataSource={localData}
-          gridName='Grid'
-        />
-      </div>
-    );
   }
+}))(TableRow);
+
+const useStyles = makeStyles(({
+  root: {
+    width: '100%',
+    overflowX: 'auto'
+  },
+  table: {
+    minWidth: 700
+  }
+}));
+
+
+export default function CustomizedTables({ partez }) {
+  const classes = useStyles();
+  if (!isLoaded(partez)) {
+    return <Loader />;
+  }
+  if (isEmpty(partez)) {
+    return <Alerta mensaje='BDD sin registros' tipo='warning' />;
+  }
+  // const total = Object.keys(partez);
+  // <Alerta mensaje={total.length + ' partes cargadas'} tipo='info' />
+  return (
+    <Paper className={classes.root}>
+      <Table className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <StyledTableCell >NÚMERO DE PARTE</StyledTableCell>
+            <StyledTableCell align='right'>DESCRIPCIÓN</StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {
+            Object.keys(partez).map((key, id) => (
+              <StyledTableRow id={id} key={key}>
+                <StyledTableCell component='th' scope='row'>
+                  {partez[key].parte}
+                </StyledTableCell>
+                <StyledTableCell align='right'>{partez[key].descripcion}</StyledTableCell>
+              </StyledTableRow>
+            ))
+          }
+        </TableBody>
+      </Table>
+    </Paper>
+  );
 }
 
-Inventario.propTypes = {
-  firebase: PropTypes.object.isRequired,
+CustomizedTables.propTypes = {
   partez: PropTypes.object
 };
-
-export default Inventario;
