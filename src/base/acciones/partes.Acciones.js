@@ -1,6 +1,6 @@
-import { ALERTA_SATISFACTORIA, FETCH_TODOS } from './constantes';
+import { ALERTA_SATISFACTORIA, FORM_ETIQUETAS_PARTE_UPDATE, FORM_ETIQUETAS_DESCRIPCION_UPDATE } from './constantes';
 
-export const _cmdaddTodo = parte => {
+export const _cmdaddParte = parte => {
   return (dispatch, getState, getFirebase) => {
     const firebase = getFirebase();
     firebase
@@ -10,22 +10,38 @@ export const _cmdaddTodo = parte => {
           type: ALERTA_SATISFACTORIA,
           payload: 'Guardado'
         });
+      });
+  };
+};
+export const _cmdupdateParte = (zparte) => {
+  return (dispatch) => {
+    dispatch({
+      type: FORM_ETIQUETAS_PARTE_UPDATE,
+      payload: zparte
+    });
+  };
+};
+export const _cmdupdateDes = (zdes) => {
+  return (dispatch) => {
+    dispatch({
+      type: FORM_ETIQUETAS_DESCRIPCION_UPDATE,
+      payload: zdes
     });
   };
 };
 
-export const _cmdgetPartes = () => {
+/* export const _cmdgetPartes = () => {
   return (dispatch, getState, getFirebase) => {
     const firebase = getFirebase();
     firebase
       .on('value', snapshot => {
         dispatch({
-          type: FETCH_TODOS,
-          payload: snapshot.val()
+          type: ALERTA_INFO,
+          payload: 'PLAYA' + snapshot
         });
-    });
+      });
   };
-};
+}; */
 /*
 export const addToDo = newToDo => async dispatch => {
   todosRef.push().set(newToDo);
