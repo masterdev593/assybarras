@@ -48,10 +48,11 @@ export default function CustomizedTables({ partez }) {
   if (isEmpty(partez)) {
     return <Alerta mensaje='BDD sin registros' tipo='warning' />;
   }
-  // const total = Object.keys(partez);
+  const total = Object.keys(partez);
   // <Alerta mensaje={total.length + ' partes cargadas'} tipo='info' />
   return (
     <Paper className={classes.root}>
+    <Alerta mensaje={total.length + ' partes cargadas'} tipo='info' />
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
