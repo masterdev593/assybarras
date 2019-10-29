@@ -7,8 +7,7 @@ import {
 
 const initialState = {
   estaCargando: false,
-  laparte: '',
-  lades: ''
+  catEtiquetas: []
 };
 
 export default (state = initialState, action) => {
@@ -21,7 +20,8 @@ export default (state = initialState, action) => {
     case FORM_ETIQUETAS_PARTE_UPDATE:
       return {
         ...state,
-        laparte: action.payload
+        // catEtiquetas: action.zparte
+        catEtiquetas: [...state.catEtiquetas, action.zparte]
       };
     case FORM_ETIQUETAS_DESCRIPCION_UPDATE:
       return {

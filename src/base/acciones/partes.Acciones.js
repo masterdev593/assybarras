@@ -15,9 +15,12 @@ export const _cmdaddParte = parte => {
 };
 export const _cmdupdateParte = (zparte) => {
   return (dispatch) => {
+    console.log('====================================');
+    console.log(zparte);
+    console.log('====================================');
     dispatch({
       type: FORM_ETIQUETAS_PARTE_UPDATE,
-      payload: zparte
+      zparte
     });
   };
 };
