@@ -25,7 +25,8 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(5)
+    padding: theme.spacing(5),
+    borderRadius: '40px'
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -57,8 +58,23 @@ class AssyBarras extends Component {
     this.props._cmdlimpioAlerta();
   }
 
-  handlearParte(e) {
-    this.props._cmdupdateParte(e.target.value.toUpperCase());
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  handlearParte(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.props._cmdupdateParte({
+      [name]: value
+    });
   }
   handlearDes(e) {
     this.props._cmdupdateDes(e.target.value.toUpperCase());
@@ -75,53 +91,57 @@ class AssyBarras extends Component {
   }
 
   handleSubmit() {
-    const { laparte, lades } = this.props;
+    const { catEtiquetas} = this.props;
     console.table(this.props);
     let datos = {
-      parte: laparte,
-      descripcion: lades
+      parte: catEtiquetas.parte,
+      descripcion: catEtiquetas.descripcion
     };
     this.props._cmdaddParte(datos);
   }
 
   render() {
-    const { classes, mensaje, tipo, laparte, lades } = this.props;
-    const values = { parte: laparte, descripcion: lades };
+    const { classes, mensaje, tipo, catEtiquetas } = this.props;
+    const values = catEtiquetas;
     return (
       <Grid container spacing={3}>
         <Grid item sm={6} xs={12}>
           <Formik
             initialValues={values}
-            render={props => (
-              <form autoComplete='off' noValidate>
+            validationSchema={validationSchema}
+            >
+            {({ isValid, errors, handleChange, values, handleReset }) => (
+              <form autoComplete='off' noValidate onReset={handleReset}>
                 <TextField
                   className={classes.textField}
-                  error={props.errors.parte}
-                  helperText={props.errors.parte ? props.errors.parte : ''}
+                  error={errors.parte}
+                  helperText={errors.parte ? errors.parte : ''}
                   id='idnombre'
                   label='Nro. de Parte'
                   margin='normal'
                   name='parte'
                   onBlur={this.handlearParte}
-                  onChange={props.handleChange}
+                  onChange={handleChange}
                   required={true}
-                  value={props.values.parte}
+                  value={values.parte}
                   variant='outlined'
                 />
-                {props.errors.parte && <Alerta mensaje={props.errors.parte ? props.errors.parte : ''} tipo='error' />}
+                {errors.parte && <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' />}
                 <TextField
                   className={classes.textField}
+                  error={errors.descripcion}
+                  helperText={errors.descripcion ? errors.descripcion : ''}
                   id='iddescripcion'
                   label='Descripción'
                   margin='normal'
                   name='descripcion'
-                  onBlur={this.handlearDes}
-                  onChange={props.handleChange}
+                  onBlur={this.handlearParte}
+                  onChange={handleChange}
                   required={true}
-                  value={props.values.descripcion}
+                  value={values.descripcion}
                   variant='outlined'
                 />
-                {props.errors.descripcion && <Alerta mensaje={props.errors.descripcion ? props.errors.descripcion : ''} tipo='error' />}
+                {errors.descripcion && <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' />}
                 <TextField
                   className={classes.textField}
                   id='idpieza'
@@ -173,7 +193,7 @@ class AssyBarras extends Component {
                   trigger={() => (
                     <Button
                       color='secondary'
-                      disabled={props.isValid ? false : true }
+                      disabled={isValid ? false : true}
                       style={{ margin: '0.5rem 5rem' }}
                       variant='contained'
                       >
@@ -183,8 +203,7 @@ class AssyBarras extends Component {
                 />
               </form>
             )}
-            validationSchema={validationSchema}
-          />
+          </ Formik>
         </Grid>
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
@@ -195,10 +214,10 @@ class AssyBarras extends Component {
                   justifyContent: 'space-between'
                 }}
                 >
-                <Typography>{lades}</Typography>
-                <Typography>1 P12</Typography>
+                <Typography>{catEtiquetas.parte}</Typography>
+                <Typography>1 P7</Typography>
               </div>
-              <JsBarcode value={laparte} />
+              <JsBarcode value={values.descripcion} />
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography>SAMSUNG</Typography>
                 <Typography>KOREA</Typography>
@@ -228,8 +247,7 @@ AssyBarras.propTypes = {
   _cmdlimpioAlerta: PropTypes.func.isRequired,
   tipo: PropTypes.string.isRequired,
   mensaje: PropTypes.string.isRequired,
-  laparte: PropTypes.string.isRequired,
-  lades: PropTypes.string.isRequired
+  catEtiquetas: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(AssyBarras);
