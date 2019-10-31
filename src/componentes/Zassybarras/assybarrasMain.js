@@ -13,12 +13,26 @@ import _ from 'lodash';
 import Alerta from '../alerta';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { FormikTextField, FormikRadioGroupField } from 'formik-material-fields';
+import moment from 'moment';
+import 'moment/locale/es';
 
 const validationSchema = Yup.object({
-  parte: Yup.string('Ingrese la parte').required('El número de Parte es requerido'),
-  descripcion: Yup.string('Ingrese la descripción').required('La Descripción es requerida')
+  parte: Yup.string('Ingrese la parte').required('El número de Parte es requerido').max(11, 'Código de 11 caracteres'),
+  descripcion: Yup.string('Ingrese la descripción').required('La Descripción es requerida'),
+  linea: Yup.string().required('La Linea es requerida')
+  /*   email: Yup.string()
+      .matches(/georges.abitbol@gmail.com/, 'cant change email'),
+    providerName: Yup.string()
+      .required('type your name'),
+    password: Yup.string()
+      .min(8, 'at least 8 chars')
+      .matches(/[a-z]/, 'at least one lowercase char')
+      .matches(/[A-Z]/, 'at least one uppercase char')
+      .matches(/[a-zA-Z]+[^a-zA-Z\s]+/, 'at least 1 number or special char (@,!,#, etc).'),
+    passwordConfirm: Yup.string()
+      .equalTo(Yup.ref('password'), 'passwords dont match') */
 });
-
 
 const styles = theme => ({
   paper: {
@@ -26,7 +40,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(5),
-    borderRadius: '40px'
+    borderRadius: '20px'
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -48,6 +62,7 @@ class AssyBarras extends Component {
       resultado: ''
     };
     this.handlearParte = this.handlearParte.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handlearDes = this.handlearDes.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.handleError = this.handleError.bind(this);
@@ -58,19 +73,13 @@ class AssyBarras extends Component {
     this.props._cmdlimpioAlerta();
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
+  handleInputChange(e) {
+    this.setState({ [e.target.name]: e.target.value.toUpperCase() });
   }
 
   handlearParte(event) {
     const target = event.target;
-    const value = target.value;
+    const value = target.value.toUpperCase();
     const name = target.name;
     this.props._cmdupdateParte({
       [name]: value
@@ -91,18 +100,22 @@ class AssyBarras extends Component {
   }
 
   handleSubmit() {
-    const { catEtiquetas} = this.props;
+    const { parte, descripcion } = this.state;
     console.table(this.props);
     let datos = {
-      parte: catEtiquetas.parte,
-      descripcion: catEtiquetas.descripcion
+      parte,
+      descripcion
     };
     this.props._cmdaddParte(datos);
   }
 
   render() {
-    const { classes, mensaje, tipo, catEtiquetas } = this.props;
-    const values = catEtiquetas;
+    const { classes, mensaje, tipo } = this.props;
+    const values = {
+      parte: this.state.parte.toUpperCase(),
+      descripcion: this.state.descripcion.toUpperCase()
+    };
+    const hoy = moment(new Date()).locale('es').format('YYYYMMDD');
     return (
       <Grid container spacing={3}>
         <Grid item sm={6} xs={12}>
@@ -110,38 +123,30 @@ class AssyBarras extends Component {
             initialValues={values}
             validationSchema={validationSchema}
             >
-            {({ isValid, errors, handleChange, values, handleReset }) => (
-              <form autoComplete='off' noValidate onReset={handleReset}>
-                <TextField
+            {({ isValid, errors, values }) => (
+              <form autoComplete='off' noValidate>
+                <FormikTextField
                   className={classes.textField}
-                  error={errors.parte}
-                  helperText={errors.parte ? errors.parte : ''}
-                  id='idnombre'
                   label='Nro. de Parte'
                   margin='normal'
                   name='parte'
-                  onBlur={this.handlearParte}
-                  onChange={handleChange}
+                  onChange={this.handleInputChange}
                   required={true}
                   value={values.parte}
                   variant='outlined'
                 />
-                {errors.parte && <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' />}
-                <TextField
+                {(errors.parte && !errors) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
+                <FormikTextField
                   className={classes.textField}
-                  error={errors.descripcion}
-                  helperText={errors.descripcion ? errors.descripcion : ''}
-                  id='iddescripcion'
                   label='Descripción'
                   margin='normal'
                   name='descripcion'
-                  onBlur={this.handlearParte}
-                  onChange={handleChange}
+                  onChange={this.handleInputChange}
                   required={true}
                   value={values.descripcion}
                   variant='outlined'
                 />
-                {errors.descripcion && <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' />}
+                {(errors.descripcion) ? <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
                 <TextField
                   className={classes.textField}
                   id='idpieza'
@@ -187,6 +192,17 @@ class AssyBarras extends Component {
                   value={this.state.origen.toUpperCase()}
                   variant='outlined'
                 />
+                <FormikRadioGroupField
+                  className={classes.textField}
+                  fullWidth
+                  margin='normal'
+                  name='linea'
+                  options={[
+                    { label: 'HHP', value: '0' },
+                    { label: 'CE', value: '1' }
+                  ]}
+                  row='all'
+                />
                 <ReactToPrint
                   content={() => this.componentRef}
                   onAfterPrint={this.handleSubmit}
@@ -208,19 +224,18 @@ class AssyBarras extends Component {
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
             <div ref={el => (this.componentRef = el)}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between'
-                }}
-                >
-                <Typography>{catEtiquetas.parte}</Typography>
-                <Typography>1 P7</Typography>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography>{this.state.descripcion}</Typography>
+                <Typography>1 Q14</Typography>
               </div>
-              <JsBarcode value={values.descripcion} />
+              <JsBarcode fontface={'Roboto'} fontSize={50} format={'CODE39'} height={50} value={this.state.parte} />
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography>SAMSUNG</Typography>
                 <Typography>KOREA</Typography>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography>HHP</Typography>
+                <Typography>{hoy}</Typography>
               </div>
             </div>
           </Paper>
@@ -247,7 +262,8 @@ AssyBarras.propTypes = {
   _cmdlimpioAlerta: PropTypes.func.isRequired,
   tipo: PropTypes.string.isRequired,
   mensaje: PropTypes.string.isRequired,
-  catEtiquetas: PropTypes.object.isRequired
+  laparte: PropTypes.string.isRequired,
+  lades: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(AssyBarras);
