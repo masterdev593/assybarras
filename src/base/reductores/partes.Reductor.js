@@ -7,7 +7,9 @@ import {
 
 const initialState = {
   estaCargando: false,
-  catEtiquetas: []
+  // catEtiquetas: [],
+  laparte: 'GH97-21065A',
+  lades: 'ASSY PBA MAIN'
 };
 
 export default (state = initialState, action) => {
@@ -21,7 +23,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         // catEtiquetas: action.zparte
-        catEtiquetas: [...state.catEtiquetas, action.zparte]
+        // catEtiquetas: [...state.catEtiquetas, action.zparte]
+        laparte: action.parte,
+        lades: action.descripcion
       };
     case FORM_ETIQUETAS_DESCRIPCION_UPDATE:
       return {

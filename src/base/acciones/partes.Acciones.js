@@ -20,7 +20,8 @@ export const _cmdupdateParte = (zparte) => {
     console.log('====================================');
     dispatch({
       type: FORM_ETIQUETAS_PARTE_UPDATE,
-      zparte
+      parte: zparte.parte,
+      descripcion: zparte.descripcion
     });
   };
 };

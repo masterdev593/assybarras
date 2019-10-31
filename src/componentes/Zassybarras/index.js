@@ -7,7 +7,8 @@ import { _cmdlimpioAlerta } from '../../base/acciones/alerta.Acciones';
 const mapStateToProps = state => ({
   tipo: state.alerta.tipo,
   mensaje: state.alerta.mensaje,
-  catEtiquetas: state.partes.catEtiquetas
+  laparte: state.partes.laparte,
+  lades: state.partes.lades
 });
 
 const mapDispatchToProps = dispatch =>
