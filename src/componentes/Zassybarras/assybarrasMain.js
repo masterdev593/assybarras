@@ -45,7 +45,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 250
+    width: 275
   }
 });
 
@@ -135,7 +135,7 @@ class AssyBarras extends Component {
                   value={values.parte}
                   variant='outlined'
                 />
-                {(errors.parte && !errors) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
+                {(errors.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
                   label='Descripción'
@@ -201,6 +201,9 @@ class AssyBarras extends Component {
                     { label: 'HHP', value: '0' },
                     { label: 'CE', value: '1' }
                   ]}
+                  RadioProps={
+                    {onChange: this.handleChange}
+                  }
                   row='all'
                 />
                 <ReactToPrint
@@ -224,7 +227,7 @@ class AssyBarras extends Component {
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
             <div ref={el => (this.componentRef = el)}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #000' }}>
                 <Typography>{this.state.descripcion}</Typography>
                 <Typography>1 Q14</Typography>
               </div>
