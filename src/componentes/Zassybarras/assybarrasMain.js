@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import JsBarcode from 'react-barcode';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import ReactToPrint from 'react-to-print';
 import BarcodeReader from 'react-barcode-reader';
 import _ from 'lodash';
 import Alerta from '../alerta';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { FormikTextField, FormikRadioGroupField } from 'formik-material-fields';
+import { FormikTextField, FormikSelectField } from 'formik-material-fields';
 import moment from 'moment';
 import 'moment/locale/es';
 
@@ -45,7 +45,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 275
+    width: 250
   }
 });
 
@@ -59,10 +59,12 @@ class AssyBarras extends Component {
       ubicacion: '',
       marca: 'SAMSUNG',
       origen: 'KOREA',
-      resultado: ''
+      resultado: '',
+      linea: ''
     };
     this.handlearParte = this.handlearParte.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handlearDes = this.handlearDes.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.handleError = this.handleError.bind(this);
@@ -75,6 +77,11 @@ class AssyBarras extends Component {
 
   handleInputChange(e) {
     this.setState({ [e.target.name]: e.target.value.toUpperCase() });
+  }
+  handleSelectChange(event) {
+    this.setState({
+      value: event.target.value
+    });
   }
 
   handlearParte(event) {
@@ -113,7 +120,12 @@ class AssyBarras extends Component {
     const { classes, mensaje, tipo } = this.props;
     const values = {
       parte: this.state.parte.toUpperCase(),
-      descripcion: this.state.descripcion.toUpperCase()
+      descripcion: this.state.descripcion.toUpperCase(),
+      pieza: this.state.pieza,
+      ubicacion: this.state.ubicacion,
+      marca: this.state.marca,
+      origen: this.state.origen,
+      linea: this.state.linea
     };
     const hoy = moment(new Date()).locale('es').format('YYYYMMDD');
     return (
@@ -122,7 +134,7 @@ class AssyBarras extends Component {
           <Formik
             initialValues={values}
             validationSchema={validationSchema}
-            >
+          >
             {({ isValid, errors, values }) => (
               <form autoComplete='off' noValidate>
                 <FormikTextField
@@ -147,75 +159,77 @@ class AssyBarras extends Component {
                   variant='outlined'
                 />
                 {(errors.descripcion) ? <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
-                <TextField
+                <FormikTextField
                   className={classes.textField}
-                  id='idpieza'
                   label='Piezas'
                   margin='normal'
                   name='pieza'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                   required={true}
                   type='number'
-                  value={this.state.pieza}
+                  value={values.pieza}
                   variant='outlined'
                 />
-                <TextField
+                {(errors.pieza) ? <Alerta mensaje={errors.pieza ? errors.pieza : ''} tipo='error' /> : ''}
+                <FormikTextField
                   className={classes.textField}
-                  id='idubicacion'
                   label='Ubicación'
                   margin='normal'
                   name='ubicacion'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                   required={true}
-                  value={this.state.ubicacion.toUpperCase()}
+                  value={values.ubicacion}
                   variant='outlined'
                 />
-                <TextField
+                {(errors.ubicacion) ? <Alerta mensaje={errors.ubicacion ? errors.ubicacion : ''} tipo='error' /> : ''}
+                <FormikTextField
                   className={classes.textField}
-                  id='idmarca'
                   label='Marca'
                   margin='normal'
                   name='marca'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                   required={true}
-                  value={this.state.marca.toUpperCase()}
+                  value={values.marca}
                   variant='outlined'
                 />
-                <TextField
+                {(errors.marca) ? <Alerta mensaje={errors.marca ? errors.marca : ''} tipo='error' /> : ''}
+                <FormikTextField
                   className={classes.textField}
-                  id='idorigen'
-                  label='Origen'
+                  label='origen'
                   margin='normal'
                   name='origen'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                   required={true}
-                  value={this.state.origen.toUpperCase()}
+                  value={values.origen}
                   variant='outlined'
                 />
-                <FormikRadioGroupField
+                {(errors.origen) ? <Alerta mensaje={errors.origen ? errors.origen : ''} tipo='error' /> : ''}
+                <FormikSelectField
                   className={classes.textField}
                   fullWidth
+                  label='Linea'
                   margin='normal'
                   name='linea'
+                  onChange={this.handleInputChange}
                   options={[
-                    { label: 'HHP', value: '0' },
-                    { label: 'CE', value: '1' }
+                    { label: 'CE', value: 'CE' },
+                    { label: 'HHP', value: 'HHP' },
+                    { label: 'PP', value: 'PP' },
+                    { label: 'OTROS', value: 'OTROS' }
                   ]}
-                  RadioProps={
-                    {onChange: this.handleChange}
-                  }
-                  row='all'
+                  value={values.linea}
+                  variant='outlined'
                 />
                 <ReactToPrint
                   content={() => this.componentRef}
-                  onAfterPrint={this.handleSubmit}
+                  onBeforePrint={this.handleSubmit}
                   trigger={() => (
                     <Button
                       color='secondary'
                       disabled={isValid ? false : true}
                       style={{ margin: '0.5rem 5rem' }}
                       variant='contained'
-                      >
+                    >
                       Imprimir
                     </Button>
                   )}
@@ -227,20 +241,49 @@ class AssyBarras extends Component {
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
             <div ref={el => (this.componentRef = el)}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #000' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #000' }}>
                 <Typography>{this.state.descripcion}</Typography>
-                <Typography>1 Q14</Typography>
+                <Typography>{this.state.pieza} {this.state.ubicacion} </Typography>
               </div>
               <JsBarcode fontface={'Roboto'} fontSize={50} format={'CODE39'} height={50} value={this.state.parte} />
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography>SAMSUNG</Typography>
-                <Typography>KOREA</Typography>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid #000' }}>
+                <Typography>{this.state.marca}</Typography>
+                <Typography>{this.state.origen}</Typography>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography>HHP</Typography>
-                <Typography>{hoy}</Typography>
-              </div>
+
+              <Typography style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box fontWeight='fontWeightBold' m={1}>
+                  {this.state.linea}
+                </Box>
+                <Box fontWeight='fontWeightBold' m={1}>
+                  {hoy}
+                </Box>
+              </Typography>
             </div>
+            <Typography component='div' variant='subtitle2'>
+              <Box bgcolor='background.paper' display='flex' flexDirection='row' m={1} p={1}>
+                <Box bgcolor='grey.300' p={1}>
+                  Item 1
+        </Box>
+                <Box bgcolor='grey.300' p={1}>
+                  Item 1
+        </Box>
+                <Box bgcolor='grey.300' p={1}>
+                  Item 1
+        </Box>
+              </Box>
+              <Box bgcolor='background.paper' display='flex' flexDirection='row-reverse' m={1} p={1}>
+                <Box bgcolor='grey.300' p={1}>
+                  Item 1
+        </Box>
+                <Box bgcolor='grey.300' p={1}>
+                  Item 1
+        </Box>
+                <Box bgcolor='grey.300' p={1}>
+                  Item 1
+        </Box>
+              </Box>
+            </Typography>
           </Paper>
 
           <div>
