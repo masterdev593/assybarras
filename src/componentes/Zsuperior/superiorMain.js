@@ -72,23 +72,37 @@ const SuperiorMain = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl3, setAnchorEl3] = React.useState(null);
+  const [anchorEl4, setAnchorEl4] = React.useState(null);
   const open = Boolean(anchorEl);
   const open2 = Boolean(anchorEl2);
+  const open3 = Boolean(anchorEl3);
+  const open4 = Boolean(anchorEl4);
 
   function handleMenuHhp(event) {
     setAnchorEl(event.currentTarget);
   }
-
   function handleMenuProtectionPro(event) {
     setAnchorEl2(event.currentTarget);
+  }
+  function handleMenuSony(event) {
+    setAnchorEl3(event.currentTarget);
+  }
+  function handleMenuSkins(event) {
+    setAnchorEl4(event.currentTarget);
   }
 
   function handleClose() {
     setAnchorEl(null);
   }
-
   function handleClose2() {
     setAnchorEl2(null);
+  }
+  function handleClose3() {
+    setAnchorEl3(null);
+  }
+  function handleClose4() {
+    setAnchorEl3(null);
   }
 
   return (
@@ -160,7 +174,63 @@ const SuperiorMain = () => {
               horizontal: 'left'
             }}
             >
-            <MenuItem component={Link} onClick={handleClose2} to='./inventariopro'>
+            <MenuItem component={Link} onClick={handleClose2} to='./pp'>
+              Inventario
+            </MenuItem>
+          </Menu>
+          <Button
+            aria-controls='menu-protection'
+            aria-haspopup='true'
+            aria-label='account of current user'
+            color='secondary'
+            onClick={handleMenuSony}
+            >
+            sony
+          </Button>
+          <Menu
+            anchorEl={anchorEl3}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left'
+            }}
+            id='menu-protection'
+            keepMounted
+            onClose={handleClose3}
+            open={open3}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left'
+            }}
+            >
+            <MenuItem component={Link} onClick={handleClose3} to='./sony'>
+              Inventario
+            </MenuItem>
+          </Menu>
+          <Button
+            aria-controls='menu-protection'
+            aria-haspopup='true'
+            aria-label='account of current user'
+            color='secondary'
+            onClick={handleMenuSkins}
+            >
+            skins
+          </Button>
+          <Menu
+            anchorEl={anchorEl4}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left'
+            }}
+            id='menu-protection'
+            keepMounted
+            onClose={handleClose4}
+            open={open4}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left'
+            }}
+            >
+            <MenuItem component={Link} onClick={handleClose4} to='./skins'>
               Inventario
             </MenuItem>
           </Menu>
