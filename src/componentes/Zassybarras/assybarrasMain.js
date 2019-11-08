@@ -17,10 +17,12 @@ import { FormikTextField, FormikSelectField } from 'formik-material-fields';
 import moment from 'moment';
 import 'moment/locale/es';
 
+// TODO: Verificar el prop Touched de formik y Verificar todas la validaciones, acomdar la etiqueta para un release 1
+
 const validationSchema = Yup.object({
-  parte: Yup.string('Ingrese la parte').required('El número de Parte es requerido').max(11, 'Código de 11 caracteres'),
-  descripcion: Yup.string('Ingrese la descripción').required('La Descripción es requerida'),
-  linea: Yup.string().required('La Linea es requerida')
+  parte: Yup.string('ingrese la parte').required('el número de parte es requerido').max(11, 'número de parte de 11 caracteres'),
+  descripcion: Yup.string('ingrese la descripción').required('la descripción es requerida'),
+  linea: Yup.string().required('la Linea es requerida')
   /*   email: Yup.string()
       .matches(/georges.abitbol@gmail.com/, 'cant change email'),
     providerName: Yup.string()
@@ -39,13 +41,22 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(5),
+    padding: theme.spacing(1),
     borderRadius: '20px'
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 250
+  },
+  borde: {
+    padding: 0,
+    margin: 0
+  },
+  bordeBarcode: {
+    borderTop: '2px solid #000',
+    padding: 0,
+    margin: 0
   }
 });
 
@@ -134,7 +145,7 @@ class AssyBarras extends Component {
           <Formik
             initialValues={values}
             validationSchema={validationSchema}
-          >
+            >
             {({ isValid, errors, values }) => (
               <form autoComplete='off' noValidate>
                 <FormikTextField
@@ -144,7 +155,7 @@ class AssyBarras extends Component {
                   name='parte'
                   onChange={this.handleInputChange}
                   required={true}
-                  value={values.parte}
+                  value={this.state.parte.toUpperCase()}
                   variant='outlined'
                 />
                 {(errors.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
@@ -229,7 +240,7 @@ class AssyBarras extends Component {
                       disabled={isValid ? false : true}
                       style={{ margin: '0.5rem 5rem' }}
                       variant='contained'
-                    >
+                      >
                       Imprimir
                     </Button>
                   )}
@@ -240,50 +251,42 @@ class AssyBarras extends Component {
         </Grid>
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper}>
-            <div ref={el => (this.componentRef = el)}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #000' }}>
-                <Typography>{this.state.descripcion}</Typography>
-                <Typography>{this.state.pieza} {this.state.ubicacion} </Typography>
-              </div>
-              <JsBarcode fontface={'Roboto'} fontSize={50} format={'CODE39'} height={50} value={this.state.parte} />
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid #000' }}>
-                <Typography>{this.state.marca}</Typography>
-                <Typography>{this.state.origen}</Typography>
-              </div>
-
-              <Typography style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Box fontWeight='fontWeightBold' m={1}>
-                  {this.state.linea}
+            <Typography ref={el => (this.componentRef = el)} variant='subtitle2'>
+              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
+                <Box className={classes.borde} fontSize='h6.fontSize' fontWeight={500} p={1}>
+                  BIN NO: {this.state.ubicacion}
                 </Box>
-                <Box fontWeight='fontWeightBold' m={1}>
+                <Box className={classes.borde} p={1}>
+                  {this.state.pieza} PC
+                </Box>
+              </Box>
+              <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
+                {this.state.descripcion}
+              </Box>
+              <Box className={classes.bordeBarcode} p={1}>
+                <JsBarcode fontface={'Roboto'} fontSize={50} format={'CODE39'} height={70} value={this.state.parte} />
+              </Box>
+              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
+                <Box className={classes.borde} p={1}>
+                  {this.state.marca}
+                </Box>
+                <Box className={classes.borde} p={1}>
+                  {this.state.origen}
+                </Box>
+              </Box>
+              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
+                <Box className={classes.borde} p={1}>
+                {this.state.linea}
+                </Box>
+                <Box className={classes.borde} p={1}>
                   {hoy}
                 </Box>
-              </Typography>
-            </div>
-            <Typography component='div' variant='subtitle2'>
-              <Box bgcolor='background.paper' display='flex' flexDirection='row' m={1} p={1}>
-                <Box bgcolor='grey.300' p={1}>
-                  Item 1
-        </Box>
-                <Box bgcolor='grey.300' p={1}>
-                  Item 1
-        </Box>
-                <Box bgcolor='grey.300' p={1}>
-                  Item 1
-        </Box>
               </Box>
-              <Box bgcolor='background.paper' display='flex' flexDirection='row-reverse' m={1} p={1}>
-                <Box bgcolor='grey.300' p={1}>
-                  Item 1
-        </Box>
-                <Box bgcolor='grey.300' p={1}>
-                  Item 1
-        </Box>
-                <Box bgcolor='grey.300' p={1}>
-                  Item 1
-        </Box>
+              <Box className={classes.borde} p={1}>
+                INVOICE NO: {Math.floor(1000000000000 + Math.random() * 9000000000000)}
               </Box>
             </Typography>
+
           </Paper>
 
           <div>
