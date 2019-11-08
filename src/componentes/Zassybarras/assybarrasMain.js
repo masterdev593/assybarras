@@ -20,9 +20,17 @@ import 'moment/locale/es';
 // TODO: Verificar el prop Touched de formik y Verificar todas la validaciones, acomdar la etiqueta para un release 1
 
 const validationSchema = Yup.object({
-  parte: Yup.string('ingrese la parte').required('el número de parte es requerido').max(11, 'número de parte de 11 caracteres'),
-  descripcion: Yup.string('ingrese la descripción').required('la descripción es requerida'),
-  linea: Yup.string().required('la Linea es requerida')
+  parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(11, 'Número de parte de 11 caracteres'),
+  descripcion: Yup.string('Ingrese la descripción').required('La descripción es requerida'),
+  ubicacion: Yup.string('Ingrese la ubicación').required('La ubicación es requerida'),
+  factura: Yup.string('Ingrese la factura').required('La factura es requerida'),
+  cantidad: Yup.number('Ingrese la cantidad')
+    .required('La cantidad es requerida')
+    .positive('La cantidad debe ser mayor que 0')
+    .integer('La cantidad debe ser un número válido'),
+  marca: Yup.string('Ingrese la marca').required('La marca es requerida'),
+  origen: Yup.string('Ingrese el origen').required('El origen es requerido'),
+  linea: Yup.string().required('La Linea es requerida')
   /*   email: Yup.string()
       .matches(/georges.abitbol@gmail.com/, 'cant change email'),
     providerName: Yup.string()
@@ -53,6 +61,9 @@ const styles = theme => ({
     padding: 0,
     margin: 0
   },
+  borde2: {
+    borderTop: '2px solid #000'
+  },
   bordeBarcode: {
     borderTop: '2px solid #000',
     padding: 0,
@@ -66,12 +77,13 @@ class AssyBarras extends Component {
     this.state = {
       parte: '',
       descripcion: '',
-      pieza: 1,
       ubicacion: '',
+      factura: '',
+      cantidad: 1,
       marca: 'SAMSUNG',
       origen: 'KOREA',
-      resultado: '',
-      linea: ''
+      linea: '',
+      resultado: ''
     };
     this.handlearParte = this.handlearParte.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -132,11 +144,12 @@ class AssyBarras extends Component {
     const values = {
       parte: this.state.parte.toUpperCase(),
       descripcion: this.state.descripcion.toUpperCase(),
-      pieza: this.state.pieza,
+      cantidad: this.state.cantidad,
       ubicacion: this.state.ubicacion,
       marca: this.state.marca,
       origen: this.state.origen,
-      linea: this.state.linea
+      linea: this.state.linea,
+      factura: this.state.factura
     };
     const hoy = moment(new Date()).locale('es').format('YYYYMMDD');
     return (
@@ -145,8 +158,8 @@ class AssyBarras extends Component {
           <Formik
             initialValues={values}
             validationSchema={validationSchema}
-            >
-            {({ isValid, errors, values }) => (
+          >
+            {({ isValid, errors, values, touched }) => (
               <form autoComplete='off' noValidate>
                 <FormikTextField
                   className={classes.textField}
@@ -155,10 +168,10 @@ class AssyBarras extends Component {
                   name='parte'
                   onChange={this.handleInputChange}
                   required={true}
-                  value={this.state.parte.toUpperCase()}
+                  value={this.state.parte}
                   variant='outlined'
                 />
-                {(errors.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
+                {(errors.parte && touched.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
                   label='Descripción'
@@ -169,19 +182,7 @@ class AssyBarras extends Component {
                   value={values.descripcion}
                   variant='outlined'
                 />
-                {(errors.descripcion) ? <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
-                <FormikTextField
-                  className={classes.textField}
-                  label='Piezas'
-                  margin='normal'
-                  name='pieza'
-                  onChange={this.handleInputChange}
-                  required={true}
-                  type='number'
-                  value={values.pieza}
-                  variant='outlined'
-                />
-                {(errors.pieza) ? <Alerta mensaje={errors.pieza ? errors.pieza : ''} tipo='error' /> : ''}
+                {(errors.descripcion && touched.descripcion) ? <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
                   label='Ubicación'
@@ -192,7 +193,30 @@ class AssyBarras extends Component {
                   value={values.ubicacion}
                   variant='outlined'
                 />
-                {(errors.ubicacion) ? <Alerta mensaje={errors.ubicacion ? errors.ubicacion : ''} tipo='error' /> : ''}
+                {(errors.ubicacion && touched.ubicacion) ? <Alerta mensaje={errors.ubicacion ? errors.ubicacion : ''} tipo='error' /> : ''}
+                <FormikTextField
+                  className={classes.textField}
+                  label='Factura'
+                  margin='normal'
+                  name='factura'
+                  onChange={this.handleInputChange}
+                  required={true}
+                  value={values.factura}
+                  variant='outlined'
+                />
+                {(errors.factura && touched.factura) ? <Alerta mensaje={errors.factura ? errors.factura : ''} tipo='error' /> : ''}
+                <FormikTextField
+                  className={classes.textField}
+                  label='Cantidad'
+                  margin='normal'
+                  name='cantidad'
+                  onChange={this.handleInputChange}
+                  required={true}
+                  type='number'
+                  value={values.cantidad}
+                  variant='outlined'
+                />
+                {(errors.cantidad && touched.cantidad) ? <Alerta mensaje={errors.cantidad ? errors.cantidad : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
                   label='Marca'
@@ -203,10 +227,10 @@ class AssyBarras extends Component {
                   value={values.marca}
                   variant='outlined'
                 />
-                {(errors.marca) ? <Alerta mensaje={errors.marca ? errors.marca : ''} tipo='error' /> : ''}
+                {(errors.marca && touched.marca) ? <Alerta mensaje={errors.marca ? errors.marca : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
-                  label='origen'
+                  label='Origen'
                   margin='normal'
                   name='origen'
                   onChange={this.handleInputChange}
@@ -214,7 +238,7 @@ class AssyBarras extends Component {
                   value={values.origen}
                   variant='outlined'
                 />
-                {(errors.origen) ? <Alerta mensaje={errors.origen ? errors.origen : ''} tipo='error' /> : ''}
+                {(errors.origen && touched.origen) ? <Alerta mensaje={errors.origen ? errors.origen : ''} tipo='error' /> : ''}
                 <FormikSelectField
                   className={classes.textField}
                   fullWidth
@@ -231,6 +255,7 @@ class AssyBarras extends Component {
                   value={values.linea}
                   variant='outlined'
                 />
+                {(errors.linea && touched.linea) ? <Alerta mensaje={errors.linea ? errors.linea : ''} tipo='error' /> : ''}
                 <ReactToPrint
                   content={() => this.componentRef}
                   onBeforePrint={this.handleSubmit}
@@ -240,7 +265,7 @@ class AssyBarras extends Component {
                       disabled={isValid ? false : true}
                       style={{ margin: '0.5rem 5rem' }}
                       variant='contained'
-                      >
+                    >
                       Imprimir
                     </Button>
                   )}
@@ -257,7 +282,7 @@ class AssyBarras extends Component {
                   BIN NO: {this.state.ubicacion}
                 </Box>
                 <Box className={classes.borde} p={1}>
-                  {this.state.pieza} PC
+                  {this.state.cantidad} PC
                 </Box>
               </Box>
               <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
@@ -276,14 +301,14 @@ class AssyBarras extends Component {
               </Box>
               <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
                 <Box className={classes.borde} p={1}>
-                {this.state.linea}
+                  {this.state.linea}
                 </Box>
                 <Box className={classes.borde} p={1}>
                   {hoy}
                 </Box>
               </Box>
-              <Box className={classes.borde} p={1}>
-                INVOICE NO: {Math.floor(1000000000000 + Math.random() * 9000000000000)}
+              <Box borderTop={1} className={classes.borde} p={1}>
+                INVOICE NO: {this.state.factura}
               </Box>
             </Typography>
 
