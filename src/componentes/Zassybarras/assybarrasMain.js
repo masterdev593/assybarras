@@ -158,7 +158,7 @@ class AssyBarras extends Component {
           <Formik
             initialValues={values}
             validationSchema={validationSchema}
-          >
+            >
             {({ isValid, errors, values, touched }) => (
               <form autoComplete='off' noValidate>
                 <FormikTextField
@@ -265,7 +265,7 @@ class AssyBarras extends Component {
                       disabled={isValid ? false : true}
                       style={{ margin: '0.5rem 5rem' }}
                       variant='contained'
-                    >
+                      >
                       Imprimir
                     </Button>
                   )}
