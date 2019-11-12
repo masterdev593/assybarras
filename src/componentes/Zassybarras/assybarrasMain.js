@@ -17,10 +17,8 @@ import { FormikTextField, FormikSelectField } from 'formik-material-fields';
 import moment from 'moment';
 import 'moment/locale/es';
 
-// TODO: Verificar el prop Touched de formik y Verificar todas la validaciones, acomdar la etiqueta para un release 1
-
 const validationSchema = Yup.object({
-  parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(11, 'Número de parte de 11 caracteres'),
+  parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(15, 'Número de parte de 15 caracteres'),
   descripcion: Yup.string('Ingrese la descripción').required('La descripción es requerida'),
   ubicacion: Yup.string('Ingrese la ubicación').required('La ubicación es requerida'),
   factura: Yup.string('Ingrese la factura').required('La factura es requerida'),
