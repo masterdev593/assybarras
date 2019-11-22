@@ -79,7 +79,7 @@ const SuperiorMain = () => {
   const open3 = Boolean(anchorEl3);
   const open4 = Boolean(anchorEl4);
 
-  function handleMenuHhp(event) {
+  function handleMenuIdf(event) {
     setAnchorEl(event.currentTarget);
   }
   function handleMenuProtectionPro(event) {
@@ -118,9 +118,9 @@ const SuperiorMain = () => {
             aria-haspopup='true'
             aria-label='account of current user'
             color='secondary'
-            onClick={handleMenuHhp}
+            onClick={handleMenuIdf}
             >
-            HHP
+            IDF
           </Button>
           <Menu
             anchorEl={anchorEl}
@@ -140,14 +140,8 @@ const SuperiorMain = () => {
             <MenuItem component={Link} onClick={handleClose} to='./hhp'>
               Inventario
             </MenuItem>
-            <MenuItem component={Link} onClick={handleClose} to='./test'>
-              Talleres
-            </MenuItem>
-            <MenuItem component={Link} onClick={handleClose} to='./test'>
-              Ventas
-            </MenuItem>
-            <MenuItem component={Link} onClick={handleClose} to='./test'>
-              Notas de Entrega
+            <MenuItem component={Link} onClick={handleClose} to='./log'>
+              Log
             </MenuItem>
           </Menu>
           <Button
