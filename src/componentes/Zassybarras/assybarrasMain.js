@@ -83,10 +83,8 @@ class AssyBarras extends Component {
       linea: '',
       resultado: ''
     };
-    this.handlearParte = this.handlearParte.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
-    this.handlearDes = this.handlearDes.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.handleError = this.handleError.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -105,7 +103,7 @@ class AssyBarras extends Component {
     });
   }
 
-  handlearParte(event) {
+/*   handlearParte(event) {
     const target = event.target;
     const value = target.value.toUpperCase();
     const name = target.name;
@@ -115,7 +113,7 @@ class AssyBarras extends Component {
   }
   handlearDes(e) {
     this.props._cmdupdateDes(e.target.value.toUpperCase());
-  }
+  } */
 
   handleScan(data) {
     this.setState({
@@ -329,13 +327,9 @@ class AssyBarras extends Component {
 AssyBarras.propTypes = {
   classes: PropTypes.object.isRequired,
   _cmdaddParte: PropTypes.func.isRequired,
-  _cmdupdateParte: PropTypes.func.isRequired,
-  _cmdupdateDes: PropTypes.func.isRequired,
   _cmdlimpioAlerta: PropTypes.func.isRequired,
   tipo: PropTypes.string.isRequired,
-  mensaje: PropTypes.string.isRequired,
-  laparte: PropTypes.string.isRequired,
-  lades: PropTypes.string.isRequired
+  mensaje: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(AssyBarras);
