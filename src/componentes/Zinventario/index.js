@@ -1,29 +1,26 @@
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Inventario from './inventarioMain';
-import { _cmdaddParte } from '../../base/acciones/partes.Acciones';
+import { _cmdgetSeries } from '../../base/acciones/inventario.Acciones';
 import { _cmdlimpioAlerta } from '../../base/acciones/alerta.Acciones';
-import { firebaseConnect } from 'react-redux-firebase';
+import Inventario from './inventarioMain';
 
 const mapStateToProps = state => ({
-  partez: state.firebase.data.partez
+  tipo: state.alerta.tipo,
+  mensaje: state.alerta.mensaje,
+  catIdf: state.inventario.catIdf,
+  estaCargando: state.inventario.estaCargando
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      _cmdaddParte,
+      _cmdgetSeries,
       _cmdlimpioAlerta
     },
     dispatch
   );
 
-const enhance = compose(
-  firebaseConnect(['partez']),
-  connect(
+  export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )
-);
-
-export default enhance(Inventario);
+  )(Inventario);
