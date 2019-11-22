@@ -1,7 +1,7 @@
-import { ALERTA_SATISFACTORIA, FORM_ETIQUETAS_PARTE_UPDATE, FORM_ETIQUETAS_DESCRIPCION_UPDATE } from './constantes';
+import { ALERTA_SATISFACTORIA } from './constantes';
 
 export const _cmdaddParte = parte => {
-  return (dispatch, getState, getFirebase) => {
+  return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     firebase
       .push('partez', parte)
@@ -13,7 +13,7 @@ export const _cmdaddParte = parte => {
       });
   };
 };
-export const _cmdupdateParte = (zparte) => {
+/* export const _cmdupdateParte = (zparte) => {
   return (dispatch) => {
     console.log('====================================');
     console.log(zparte);
@@ -32,7 +32,7 @@ export const _cmdupdateDes = (zdes) => {
       payload: zdes
     });
   };
-};
+}; */
 
 /* export const _cmdgetPartes = () => {
   return (dispatch, getState, getFirebase) => {
