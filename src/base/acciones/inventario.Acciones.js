@@ -37,7 +37,7 @@ export const _cmdgetSeries = () => {
           });
         })
         .catch(() => {
-          dispatch({ type: ALERTA_ERROR, payload: 4520 });
+          dispatch({ type: ALERTA_ERROR, payload: 'API desconectada' });
           dispatch({ type: CAT_INVENTARIO_ERROR });
         });
     } else {
