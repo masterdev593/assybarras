@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,7 +20,7 @@ import moment from 'moment';
 import 'moment/locale/es';
 
 const validationSchema = Yup.object({
-  parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(15, 'Número de parte de 15 caracteres'),
+  parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(25, 'Número de parte de 25 caracteres'),
   descripcion: Yup.string('Ingrese la descripción').required('La descripción es requerida'),
   ubicacion: Yup.string('Ingrese la ubicación').required('La ubicación es requerida'),
   factura: Yup.string('Ingrese la factura').required('La factura es requerida'),
@@ -41,6 +43,7 @@ const validationSchema = Yup.object({
     passwordConfirm: Yup.string()
       .equalTo(Yup.ref('password'), 'passwords dont match') */
 });
+
 
 const styles = theme => ({
   paper: {
@@ -81,7 +84,9 @@ class AssyBarras extends Component {
       marca: 'SAMSUNG',
       origen: 'KOREA',
       linea: '',
-      resultado: ''
+      resultado: '',
+      value: '',
+      suggestions: []
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
@@ -92,6 +97,8 @@ class AssyBarras extends Component {
 
   componentDidMount() {
     this.props._cmdlimpioAlerta();
+    this.props._cmdgetSeries();
+
   }
 
   handleInputChange(e) {
@@ -103,17 +110,17 @@ class AssyBarras extends Component {
     });
   }
 
-/*   handlearParte(event) {
-    const target = event.target;
-    const value = target.value.toUpperCase();
-    const name = target.name;
-    this.props._cmdupdateParte({
-      [name]: value
-    });
-  }
-  handlearDes(e) {
-    this.props._cmdupdateDes(e.target.value.toUpperCase());
-  } */
+  /*   handlearParte(event) {
+      const target = event.target;
+      const value = target.value.toUpperCase();
+      const name = target.name;
+      this.props._cmdupdateParte({
+        [name]: value
+      });
+    }
+    handlearDes(e) {
+      this.props._cmdupdateDes(e.target.value.toUpperCase());
+    } */
 
   handleScan(data) {
     this.setState({
@@ -148,9 +155,15 @@ class AssyBarras extends Component {
       factura: this.state.factura
     };
     const hoy = moment(new Date()).locale('es').format('YYYYMMDD');
+    // Autosuggest will pass through all these props to the input.
+    /*     const inputProps = {
+          placeholder: 'Type a programming language',
+          value,
+          onChange: this.onChange
+        }; */
     return (
       <Grid container spacing={3}>
-        <Grid item sm={6} xs={12}>
+        <Grid item sm={10} xs={12}>
           <Formik
             initialValues={values}
             validationSchema={validationSchema}
@@ -254,7 +267,6 @@ class AssyBarras extends Component {
                 {(errors.linea && touched.linea) ? <Alerta mensaje={errors.linea ? errors.linea : ''} tipo='error' /> : ''}
                 <ReactToPrint
                   content={() => this.componentRef}
-                  onBeforePrint={this.handleSubmit}
                   trigger={() => (
                     <Button
                       color='secondary'
@@ -270,7 +282,7 @@ class AssyBarras extends Component {
             )}
           </ Formik>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid item sm={10} xs={12}>
           <Paper className={classes.paper}>
             <Typography ref={el => (this.componentRef = el)} variant='subtitle2'>
               <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
@@ -285,7 +297,7 @@ class AssyBarras extends Component {
                 {this.state.descripcion}
               </Box>
               <Box className={classes.bordeBarcode} p={1}>
-                <JsBarcode fontface={'Roboto'} fontSize={50} format={'CODE39'} height={70} value={this.state.parte} />
+                <JsBarcode fontface={'Roboto'} fontSize={30} format={'CODE128'} height={75} value={this.state.parte} width={1.5} />
               </Box>
               <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
                 <Box className={classes.borde} p={1}>
@@ -328,8 +340,10 @@ AssyBarras.propTypes = {
   classes: PropTypes.object.isRequired,
   _cmdaddParte: PropTypes.func.isRequired,
   _cmdlimpioAlerta: PropTypes.func.isRequired,
+  _cmdgetSeries: PropTypes.func.isRequired,
   tipo: PropTypes.string.isRequired,
-  mensaje: PropTypes.string.isRequired
+  mensaje: PropTypes.string.isRequired,
+  catIdf: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(AssyBarras);
