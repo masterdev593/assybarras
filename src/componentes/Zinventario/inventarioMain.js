@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Loader from '../loader';
 import Alerta from '../alerta';
-import Tabla from '../tabla';
+import TablaVirtualizada from '../tabla2';
 // import Dialog from '../dialog';
 // import ListaSimpleVista from './ListaSimpleVista';
 
@@ -17,11 +17,28 @@ class inventarioMain extends Component {
 
   render() {
     const { catIdf, estaCargando, tipo, mensaje } = this.props;
+    const columns = [
+      {
+        label: 'Parte',
+        dataKey: 'par'
+        // width: 200
+      },
+      {
+        label: 'Descripción',
+        dataKey: 'des',
+        width: 120
+      },
+      {
+        label: 'Ubicación',
+        dataKey: 'ubi',
+        width: 120
+      }
+    ];
     return (
       <div className='seriesMain'>
         {estaCargando && <Loader />}
         {!estaCargando && <Alerta mensaje={mensaje} tipo={tipo} />}
-        {!estaCargando && <Tabla tileData={catIdf} />}
+        {!estaCargando && <TablaVirtualizada columns={columns} data={catIdf} />}
       </div>
     );
   }
