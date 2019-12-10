@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Inferior from '../../componentes/inferior';
 import Superior from '../../componentes/Zsuperior';
 import AssyBarras from '../../componentes/Zassybarras';
+import AutoComplete from '../../componentes/Zautocomplete';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +25,7 @@ export default function ProgramaPagina() {
       <Superior />
       <Container className={classes.main} component='main' maxWidth='md'>
         <AssyBarras />
+        <AutoComplete />
       </Container>
       <Inferior />
     </div>
