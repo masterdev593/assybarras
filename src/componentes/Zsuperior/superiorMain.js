@@ -106,7 +106,7 @@ const SuperiorMain = () => {
   }
 
   return (
-    <AppBar className={classes.border} position='static'>
+    <AppBar className={classes.border} position='fixed'>
       <Toolbar style={{ justifyContent: 'space-around' }}>
         <img alt='IDF' className={classes.logo} src={logo} />
         <div className={classes.title}>
