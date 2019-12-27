@@ -1,11 +1,12 @@
-/* eslint-disable */
-import React from 'react';
+/* eslint-disable react/display-name */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+// import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/core/styles';
 import { FixedSizeList } from 'react-window';
+
 
 function renderRow(props) {
   const { data, index, style } = props;
@@ -16,36 +17,35 @@ function renderRow(props) {
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       display: 'block',
-      ...style,
-    },
+      ...style
+    }
   });
 }
 
 // Adapter for react-window
 const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
   const { children, ...other } = props;
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+  // const theme = useTheme();
+  // const smUp = useMediaQuery(theme.breakpoints.up('sm'));
   const itemCount = Array.isArray(children) ? children.length : 0;
-  const itemSize = smUp ? 36 : 48;
-
+  // const itemSize = smUp ? 36 : 48;
   const outerElementType = React.useMemo(() => {
     return React.forwardRef((props2, ref2) => <div ref={ref2} {...props2} {...other} />);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div ref={ref}>
       <FixedSizeList
-        style={{ padding: 0, height: Math.min(8, itemCount) * itemSize, maxHeight: 'auto' }}
-        itemData={children}
-        height={250}
-        width="100%"
-        outerElementType={outerElementType}
-        innerElementType="ul"
-        itemSize={itemSize}
-        overscanCount={5}
+        height={150}
+        innerElementType='ul'
         itemCount={itemCount}
-      >
+        itemData={children}
+        itemSize={48}
+        outerElementType={outerElementType}
+        overscanCount={5}
+        style={{ padding: 0, maxHeight: 'auto' }}
+        width='100%'
+        >
         {renderRow}
       </FixedSizeList>
     </div>
@@ -53,10 +53,11 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
 });
 
 ListboxComponent.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
-function random(length) {
+// HACK: Una funcion para generar letras ramdom
+/* function random(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
 
@@ -65,48 +66,74 @@ function random(length) {
   }
 
   return result;
-}
+} */
 
 const useStyles = makeStyles({
   listbox: {
     '& ul': {
       padding: 0,
-      margin: 0,
-    },
-  },
+      margin: 0
+    }
+  }
 });
 
-export default function Virtualize({ catIdf, _cmdgetSeries }) {
-  const [state, setState] = React.useState({
-    resultado: ''
-  });
-
-  function handleChange(evt) {
-    const value = evt.target.value;
-    console.log(value);
-    
-    setState({
-      resultado: _.replace(value.toUpperCase(), "'", '-')
-    });
-  }
+export default function Virtualize({ catIdf }) {
+  const oxtions = catIdf;
   const classes = useStyles();
+  const [des, setDes] = useState('');
+  const [ubi, setUbi] = useState('');
+  function handleOrangeClick(event, value) {
+    // Similar a this.setState({ fruit: 'orange' })
+    // console.log(value.descripcion);
+    setDes(value.descripcion);
+    setUbi(value.ubi);
+  }
   return (
     <Autocomplete
-      id="virtualize-demo"
-      style={{ width: 300 }}
-      disableListWrap
       classes={classes}
+      disableClearable={true}
+      disableListWrap
+      filterSelectedOptions={true}
+      getOptionLabel={option => option.parte}
+      id='virtualize-demo'
       ListboxComponent={ListboxComponent}
-      options={catIdf.map(data => (data.parte))}
+      noOptionsText={'Parte no encontrada'}
+      onChange={handleOrangeClick}
+      options={oxtions}
       renderInput={params => (
-        <TextField {...params} variant="outlined" label="Nro. de Parte" fullWidth onChange={handleChange} />
+        <div>
+          <TextField {...params}
+            fullWidth
+            label='Nro. de Parte'
+            margin='normal'
+            name='parte'
+            required={true}
+            variant='outlined'
+          />
+          <TextField
+            fullWidth
+            label='Descripción'
+            margin='normal'
+            name='des'
+            value={des}
+            variant='outlined'
+          />
+          <TextField
+            fullWidth
+            label='Ubicación'
+            margin='normal'
+            name='ubi'
+            value={ubi}
+            variant='outlined'
+          />
+        </div>
       )}
+      style={{ width: 300 }}
     />
   );
 }
 
 
 Virtualize.propTypes = {
-  _cmdgetSeries: PropTypes.func.isRequired,
   catIdf: PropTypes.array.isRequired
 };
