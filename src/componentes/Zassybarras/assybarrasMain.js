@@ -51,7 +51,8 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(1),
-    borderRadius: '20px'
+    borderRadius: '20px',
+    paddingTop: '50px'
   },
   textField: {
     marginLeft: theme.spacing(1),
