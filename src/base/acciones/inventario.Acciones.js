@@ -49,7 +49,7 @@ export const _cmdgetSeries = () => {
         payload: seriesApp
       });
       dispatch({
-        type: ALERTA_SATISFACTORIA, payload: 'Series cargadas correctamente'
+        type: ALERTA_SATISFACTORIA, payload: 'Inventario cargadas correctamente'
       });
     }
   };
