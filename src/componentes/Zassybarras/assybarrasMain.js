@@ -18,6 +18,8 @@ import * as Yup from 'yup';
 import { FormikTextField, FormikSelectField } from 'formik-material-fields';
 import moment from 'moment';
 import 'moment/locale/es';
+import { FixedSizeList } from 'react-window';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const validationSchema = Yup.object({
   parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(25, 'Número de parte de 25 caracteres'),
@@ -46,6 +48,12 @@ const validationSchema = Yup.object({
 
 
 const styles = theme => ({
+  listbox: {
+    '& ul': {
+      padding: 0,
+      margin: 0
+    }
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
@@ -73,6 +81,54 @@ const styles = theme => ({
   }
 });
 
+function renderRow(props) {
+  const { data, index, style } = props;
+
+  return React.cloneElement(data[index], {
+    style: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      display: 'block',
+      ...style
+    }
+  });
+}
+
+// Adapter for react-window
+const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
+  const { children, ...other } = props;
+  // const theme = useTheme();
+  // const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+  const itemCount = Array.isArray(children) ? children.length : 0;
+  // const itemSize = smUp ? 36 : 48;
+  const outerElementType = React.useMemo(() => {
+    return React.forwardRef((props2, ref2) => <div ref={ref2} {...props2} {...other} />);
+  }, []);
+
+  return (
+    <div ref={ref}>
+      <FixedSizeList
+        height={150}
+        innerElementType='ul'
+        itemCount={itemCount}
+        itemData={children}
+        itemSize={48}
+        outerElementType={outerElementType}
+        overscanCount={5}
+        style={{ padding: 0, maxHeight: 'auto' }}
+        width='100%'
+        >
+        {renderRow}
+      </FixedSizeList>
+    </div>
+  );
+});
+
+ListboxComponent.propTypes = {
+  children: PropTypes.node
+};
+
 class AssyBarras extends Component {
   constructor(props) {
     super(props);
@@ -85,15 +141,14 @@ class AssyBarras extends Component {
       marca: 'SAMSUNG',
       origen: 'KOREA',
       linea: '',
-      resultado: '',
-      value: '',
-      suggestions: []
+      resultado: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.handleError = this.handleError.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleOrangeClick = this.handleOrangeClick.bind(this);
   }
 
   componentDidMount() {
@@ -109,6 +164,29 @@ class AssyBarras extends Component {
     this.setState({
       value: event.target.value
     });
+  }
+  handleOrangeClick(event, value) {
+    if (value.descripcion === 'null') {
+      this.setState({
+        descripcion: 'SU',
+        ubicacion: value.ubi
+      }, () => {
+        // This will output an array of objects
+        // given by Autocompelte options property.
+        console.log(this.state.descripcion + '     si           ' + this.state.ubicacion);
+      });
+    } else {
+      this.setState({
+        parte: value.parte,
+        descripcion: value.descripcion,
+        ubicacion: value.ubi
+      }, () => {
+        // This will output an array of objects
+        // given by Autocompelte options property.
+        console.log(this.state.descripcion + '     no           ' + this.state.ubicacion);
+      });
+    }
+    console.log(value.descripcion + '     +           ' + value.ubi);
   }
 
   /*   handlearParte(event) {
@@ -144,18 +222,20 @@ class AssyBarras extends Component {
   }
 
   render() {
-    const { classes, mensaje, tipo } = this.props;
-    const values = {
-      parte: this.state.parte.toUpperCase(),
-      descripcion: this.state.descripcion.toUpperCase(),
-      cantidad: this.state.cantidad,
-      ubicacion: this.state.ubicacion,
-      marca: this.state.marca,
-      origen: this.state.origen,
-      linea: this.state.linea,
-      factura: this.state.factura
+    const { classes, mensaje, tipo, catIdf } = this.props;
+    const { parte, descripcion, cantidad, ubicacion, marca, origen, linea, factura } = this.state;
+    let values = {
+      parte: parte,
+      descripcion: descripcion,
+      cantidad: cantidad,
+      ubicacion: ubicacion,
+      marca: marca,
+      origen: origen,
+      linea: linea,
+      factura: factura
     };
     const hoy = moment(new Date()).locale('es').format('YYYYMMDD');
+    const oxtions = catIdf;
     // Autosuggest will pass through all these props to the input.
     /*     const inputProps = {
           placeholder: 'Type a programming language',
@@ -165,23 +245,43 @@ class AssyBarras extends Component {
     return (
       <Grid container spacing={3}>
         <Grid item sm={10} xs={12}>
+          <Autocomplete
+            className={classes.listbox}
+            disableClearable={true}
+            getOptionLabel={option => option.parte}
+            id='virtualize-demo'
+            ListboxComponent={ListboxComponent}
+            noOptionsText={'Parte no encontrada'}
+            onChange={this.handleOrangeClick}
+            options={oxtions}
+            renderInput={params => (
+              <Formik onSubmit={values => {
+                // same shape as initial values
+                console.table(values);
+              }}
+                      >
+                {({ errors, touched }) => (
+                  <form autoComplete='off' noValidate>
+                    <FormikTextField {...params}
+                      className={classes.textField}
+                      label='Nro. de Parte'
+                      margin='normal'
+                      name='parte555'
+                      variant='outlined'
+                    />
+                    {(errors.parte && touched.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
+                  </form>
+                )}
+              </ Formik>
+            )}
+            style={{ width: 300 }}
+          />
           <Formik
             initialValues={values}
             validationSchema={validationSchema}
             >
             {({ isValid, errors, values, touched }) => (
               <form autoComplete='off' noValidate>
-                <FormikTextField
-                  className={classes.textField}
-                  label='Nro. de Parte'
-                  margin='normal'
-                  name='parte'
-                  onChange={this.handleInputChange}
-                  required={true}
-                  value={this.state.parte}
-                  variant='outlined'
-                />
-                {(errors.parte && touched.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
                   label='Descripción'
@@ -192,7 +292,8 @@ class AssyBarras extends Component {
                   value={values.descripcion}
                   variant='outlined'
                 />
-                {(errors.descripcion && touched.descripcion) ? <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
+                {(errors.descripcion && touched.descripcion) ?
+                  <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
                 <FormikTextField
                   className={classes.textField}
                   label='Ubicación'
@@ -271,7 +372,7 @@ class AssyBarras extends Component {
                   trigger={() => (
                     <Button
                       color='secondary'
-                      disabled={isValid ? false : true}
+                      disabled={isValid ? true : false}
                       style={{ margin: '0.5rem 5rem' }}
                       variant='contained'
                       >
@@ -287,18 +388,18 @@ class AssyBarras extends Component {
           <Paper className={classes.paper}>
             <Typography ref={el => (this.componentRef = el)} variant='subtitle2'>
               <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
-                <Box className={classes.borde} fontSize='h6.fontSize' fontWeight={500} p={1}>
+                <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
                   BIN NO: {this.state.ubicacion}
                 </Box>
                 <Box className={classes.borde} p={1}>
                   {this.state.cantidad} PC
                 </Box>
               </Box>
-              <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
+              <Box className={classes.borde} fontSize='caption' p={1}>
                 {this.state.descripcion}
               </Box>
               <Box className={classes.bordeBarcode} p={1}>
-                <JsBarcode fontface={'Roboto'} fontSize={30} format={'CODE128'} height={75} value={this.state.parte} width={1.5} />
+                <JsBarcode fontface={'Roboto'} fontSize={30} format={'CODE128'} height={10} value={this.state.parte} width={1.5} />
               </Box>
               <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
                 <Box className={classes.borde} p={1}>
