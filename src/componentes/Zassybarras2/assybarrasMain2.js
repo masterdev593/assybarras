@@ -17,7 +17,6 @@ import { FormikTextField, FormikSelectField } from 'formik-material-fields';
 
 
 const validationSchema = Yup.object({
-  parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(15, 'Número de parte de 15 caracteres'),
   descripcion: Yup.string('Ingrese la descripción').required('La descripción es requerida'),
   ubicacion: Yup.string('Ingrese la ubicación').required('La ubicación es requerida'),
   factura: Yup.string('Ingrese la factura').required('La factura es requerida'),
@@ -38,7 +37,8 @@ const validationSchema = Yup.object({
       .matches(/[A-Z]/, 'at least one uppercase char')
       .matches(/[a-zA-Z]+[^a-zA-Z\s]+/, 'at least 1 number or special char (@,!,#, etc).'),
     passwordConfirm: Yup.string()
-      .equalTo(Yup.ref('password'), 'passwords dont match') */
+      .equalTo(Yup.ref('password'), 'passwords dont match')
+      parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(15, 'Número de parte de 15 caracteres'),*/
 });
 
 const styles = theme => ({
@@ -72,8 +72,8 @@ class AssyVarras extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parte: '00145555680001',
-      descripcion: 'ASSY PCB MISC-JACKPACK;UH9V',
+      parte: '06DA9200756L394AK3V0094',
+      descripcion: 'MAIN B/D (SEM-P)',
       ubicacion: '',
       factura: '',
       cantidad: 1,
@@ -268,53 +268,16 @@ class AssyVarras extends Component {
           </ Formik>
         </Grid>
         <Grid item sm={6} xs={12}>
-          <Paper className={classes.paper}>
-            <Typography ref={el => (this.componentRef = el)} variant='subtitle2'>
-              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' m={1} p={1}>
-                <Box className={classes.borde} fontSize='overline.fontSize' fontWeight={500} p={1}>
-                <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  MATERIAL
-                </Box>
-                <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
-                  BN94-07756R
-                </Box>
-                  {this.state.descripcion}
-                </Box>
-              </Box>
-              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' p={1} p={1}>
-              <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  T/O # 14555568 / 0001
-                </Box>
-                <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  QTY 2 EA
-                </Box>
-              </Box>
-              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' p={1}>
-                <JsBarcode format={'CODE39'} height={75} value={this.state.parte} width={1.5} />
-                <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  STO. TYPE <br />
-                  <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
-                  041
-                </Box>
-                </Box>
-              </Box>
-              <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' p={1}>
-                <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  BIN #
-                </Box>
-                <Box className={classes.borde} fontSize='h6.fontSize' p={1}>
-                  CPENDING <br />
-                </Box>
-                <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  SRT. SEQ <br />
-                </Box>
-                <Box className={classes.borde} fontSize='overline.fontSize' p={1}>
-                  STATUS AVAIL. <br />
-                  WORKER TS03 <br />
-                </Box>
-              </Box>
-            </Typography>
-
+          <Paper className={classes.paper} ref={el => (this.componentRef = el)}>
+            <Typography variant='subtitle2'>
+            {this.state.descripcion}
+      </Typography>
+            <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' p={1}>
+              <JsBarcode displayValue={false} format={'CODE39'} height={20} value={'12345678'} width={1.5} />
+            </Box>
+            <Box className={classes.borde} p={1}>
+              {this.state.parte}
+            </Box>
           </Paper>
 
           <div>
