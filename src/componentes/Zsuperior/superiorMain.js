@@ -1,16 +1,28 @@
-import React from 'react';
+/* eslint-disable react/display-name */
+/* eslint-disable no-undef */
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
+// import InputBase from '@material-ui/core/InputBase';
+// import SearchIcon from '@material-ui/icons/Search';
 import logo from '../../recursos/logo.png';
 import { Link } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { FixedSizeList } from 'react-window';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
+  listbox: {
+    '& ul': {
+      padding: 0,
+      margin: 0
+    }
+  },
   offset: theme.mixins.toolbar,
   search: {
     position: 'relative',
@@ -69,7 +81,59 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SuperiorMain = () => {
+function renderRow(props) {
+  const { data, index, style } = props;
+
+  return React.cloneElement(data[index], {
+    style: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      display: 'block',
+      ...style
+    }
+  });
+}
+
+// Adapter for react-window
+const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
+  const { children, ...other } = props;
+  // const theme = useTheme();
+  // const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+  const itemCount = Array.isArray(children) ? children.length : 0;
+  // const itemSize = smUp ? 36 : 48;
+  const outerElementType = React.useMemo(() => {
+    return React.forwardRef((props2, ref2) => <div ref={ref2} {...props2} {...other} />);
+  }, []);
+
+  return (
+    <div ref={ref}>
+      <FixedSizeList
+        height={150}
+        innerElementType='ul'
+        itemCount={itemCount}
+        itemData={children}
+        itemSize={48}
+        outerElementType={outerElementType}
+        overscanCount={5}
+        style={{ padding: 0, maxHeight: 'auto' }}
+        width='100%'
+        >
+        {renderRow}
+      </FixedSizeList>
+    </div>
+  );
+});
+
+ListboxComponent.propTypes = {
+  children: PropTypes.node
+};
+
+const SuperiorMain = ({ _cmdgetSeries, catIdf }) => {
+  useEffect(() => {
+    _cmdgetSeries();
+  }, []);
+  const oxtions = catIdf;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
@@ -105,6 +169,9 @@ const SuperiorMain = () => {
   function handleClose4() {
     setAnchorEl3(null);
   }
+  function handleOrangeClick(event, value) {
+      console.log(value.parte + '     +           ' + value.ubi);
+    }
 
   return (
     <React.Fragment>
@@ -231,17 +298,22 @@ const SuperiorMain = () => {
             </MenuItem>
             </Menu>
           </div>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ 'aria-label': 'buscar' }}
-              placeholder='Buscar...'
+          <div style={{ width: '50%', backgroundColor: '#f8f8f8' }}>
+            <Autocomplete
+              disableClearable
+              freeSolo
+              getOptionLabel={option => option.parte}
+              id='free-solo-2-demo'
+              onChange={handleOrangeClick}
+              options={oxtions}
+              renderInput={params => (
+                <TextField {...params}
+                  fullWidth
+                  InputProps={{ ...params.InputProps, type: 'search' }}
+                  label='Buscar...'
+                  margin='normal'
+                />
+              )}
             />
           </div>
         </Toolbar>
@@ -249,6 +321,15 @@ const SuperiorMain = () => {
       <div className={classes.offset} />
     </React.Fragment>
   );
+};
+
+SuperiorMain.propTypes = {
+  _cmdaddParte: PropTypes.func.isRequired,
+  _cmdlimpioAlerta: PropTypes.func.isRequired,
+  _cmdgetSeries: PropTypes.func.isRequired,
+  tipo: PropTypes.string.isRequired,
+  mensaje: PropTypes.string.isRequired,
+  catIdf: PropTypes.array.isRequired
 };
 
 export default SuperiorMain;
