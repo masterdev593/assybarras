@@ -14,9 +14,6 @@ import {
 export const _cmdgetSeries = () => {
   return (dispatch, getState, apiSeries) => {
     const seriesApp = getState().inventario.catIdf;
-    console.log('====================================');
-    console.log(seriesApp);
-    console.log('====================================');
     // const version = getState().estado.catEstado.appVersion;
     dispatch({
       type: CAT_INVENTARIO_SOLICITA
