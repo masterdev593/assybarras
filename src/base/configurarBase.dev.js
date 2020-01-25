@@ -7,7 +7,7 @@ import rootReducer from './reductores';
 
 const configurarBase = preloadedState => {
   const defaultOptions = {
-    baseURL: 'http://192.168.1.101:5005',
+    baseURL: 'http://192.168.1.135:5005',
     headers: {
       'Content-Type': 'application/json'
     }
