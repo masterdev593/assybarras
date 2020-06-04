@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import JsBarcode from 'react-barcode';
+// import JsBarcode from 'react-barcode';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import ReactToPrint from 'react-to-print';
 import BarcodeReader from 'react-barcode-reader';
 import _ from 'lodash';
@@ -46,8 +46,8 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(1),
-    borderRadius: '20px'
+    margin: 10,
+    textAlign: 'center'
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -65,6 +65,11 @@ const styles = theme => ({
     borderTop: '2px solid #000',
     padding: 0,
     margin: 0
+  },
+  aire2: {
+    fontWeight: 600,
+    border: '2px solid black',
+    padding: '20px 0'
   }
 });
 
@@ -72,7 +77,7 @@ class AssyVarras extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parte: '06DA9200756L394AK3V0094',
+      parte: '',
       descripcion: 'MAIN B/D (SEM-P)',
       ubicacion: '',
       factura: '',
@@ -269,17 +274,10 @@ class AssyVarras extends Component {
         </Grid>
         <Grid item sm={6} xs={12}>
           <Paper className={classes.paper} ref={el => (this.componentRef = el)}>
-            <Typography variant='subtitle2'>
-            {this.state.descripcion}
-      </Typography>
-            <Box className={classes.borde} display='flex' flexDirection='row' justifyContent='space-between' p={1}>
-              <JsBarcode displayValue={false} format={'CODE39'} height={20} value={'12345678'} width={1.5} />
-            </Box>
-            <Box className={classes.borde} p={1}>
+            <Typography className={classes.aire2} variant='h2'>
               {this.state.parte}
-            </Box>
+            </Typography>
           </Paper>
-
           <div>
             <BarcodeReader
               onError={this.handleError}
