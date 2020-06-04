@@ -249,7 +249,7 @@ class AssyBarras extends Component {
             className={classes.listbox}
             disableClearable={true}
             getOptionLabel={option => option.parte}
-            id='virtualize-demo'
+            id='autocomplete-assybarrasMain'
             ListboxComponent={ListboxComponent}
             noOptionsText={'Parte no encontrada'}
             onChange={this.handleOrangeClick}
