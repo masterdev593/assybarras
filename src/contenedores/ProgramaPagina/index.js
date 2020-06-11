@@ -3,7 +3,7 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Inferior from '../../componentes/inferior';
 import Superior from '../../componentes/Zsuperior';
-import AssyBarras from '../../componentes/Zassybarras';
+import AssyBarras from '../../componentes/Zassybarras2';
 
 const useStyles = makeStyles(theme => ({
   root: {
