@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-// import JsBarcode from 'react-barcode';
-import Typography from '@material-ui/core/Typography';
-// import Box from '@material-ui/core/Box';
+import JsBarcode from 'react-barcode';
+// import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import ReactToPrint from 'react-to-print';
 import BarcodeReader from 'react-barcode-reader';
 import _ from 'lodash';
@@ -15,10 +15,13 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormikTextField, FormikSelectField } from 'formik-material-fields';
 
-
 const validationSchema = Yup.object({
-  descripcion: Yup.string('Ingrese la descripción').required('La descripción es requerida'),
-  ubicacion: Yup.string('Ingrese la ubicación').required('La ubicación es requerida'),
+  descripcion: Yup.string('Ingrese la descripción').required(
+    'La descripción es requerida'
+  ),
+  ubicacion: Yup.string('Ingrese la ubicación').required(
+    'La ubicación es requerida'
+  ),
   factura: Yup.string('Ingrese la factura').required('La factura es requerida'),
   cantidad: Yup.number('Ingrese la cantidad')
     .required('La cantidad es requerida')
@@ -41,7 +44,7 @@ const validationSchema = Yup.object({
       parte: Yup.string('Ingrese la parte').required('El número de parte es requerido').max(15, 'Número de parte de 15 caracteres'),*/
 });
 
-const styles = theme => ({
+const styles = (theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
@@ -77,7 +80,7 @@ class AssyVarras extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parte: '',
+      parte: 'MX09BN9504767AS049K8F1223',
       descripcion: 'MAIN B/D (SEM-P)',
       ubicacion: '',
       factura: '',
@@ -170,7 +173,14 @@ class AssyVarras extends Component {
                   value={this.state.parte}
                   variant='outlined'
                 />
-                {(errors.parte && touched.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}
+                {errors.parte && touched.parte ? (
+                  <Alerta
+                    mensaje={errors.parte ? errors.parte : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikTextField
                   className={classes.textField}
                   label='Descripción'
@@ -181,7 +191,14 @@ class AssyVarras extends Component {
                   value={values.descripcion}
                   variant='outlined'
                 />
-                {(errors.descripcion && touched.descripcion) ? <Alerta mensaje={errors.descripcion ? errors.descripcion : ''} tipo='error' /> : ''}
+                {errors.descripcion && touched.descripcion ? (
+                  <Alerta
+                    mensaje={errors.descripcion ? errors.descripcion : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikTextField
                   className={classes.textField}
                   label='Ubicación'
@@ -192,7 +209,14 @@ class AssyVarras extends Component {
                   value={values.ubicacion}
                   variant='outlined'
                 />
-                {(errors.ubicacion && touched.ubicacion) ? <Alerta mensaje={errors.ubicacion ? errors.ubicacion : ''} tipo='error' /> : ''}
+                {errors.ubicacion && touched.ubicacion ? (
+                  <Alerta
+                    mensaje={errors.ubicacion ? errors.ubicacion : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikTextField
                   className={classes.textField}
                   label='Factura'
@@ -203,7 +227,14 @@ class AssyVarras extends Component {
                   value={values.factura}
                   variant='outlined'
                 />
-                {(errors.factura && touched.factura) ? <Alerta mensaje={errors.factura ? errors.factura : ''} tipo='error' /> : ''}
+                {errors.factura && touched.factura ? (
+                  <Alerta
+                    mensaje={errors.factura ? errors.factura : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikTextField
                   className={classes.textField}
                   label='Cantidad'
@@ -215,7 +246,14 @@ class AssyVarras extends Component {
                   value={values.cantidad}
                   variant='outlined'
                 />
-                {(errors.cantidad && touched.cantidad) ? <Alerta mensaje={errors.cantidad ? errors.cantidad : ''} tipo='error' /> : ''}
+                {errors.cantidad && touched.cantidad ? (
+                  <Alerta
+                    mensaje={errors.cantidad ? errors.cantidad : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikTextField
                   className={classes.textField}
                   label='Marca'
@@ -226,7 +264,14 @@ class AssyVarras extends Component {
                   value={values.marca}
                   variant='outlined'
                 />
-                {(errors.marca && touched.marca) ? <Alerta mensaje={errors.marca ? errors.marca : ''} tipo='error' /> : ''}
+                {errors.marca && touched.marca ? (
+                  <Alerta
+                    mensaje={errors.marca ? errors.marca : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikTextField
                   className={classes.textField}
                   label='Origen'
@@ -237,7 +282,14 @@ class AssyVarras extends Component {
                   value={values.origen}
                   variant='outlined'
                 />
-                {(errors.origen && touched.origen) ? <Alerta mensaje={errors.origen ? errors.origen : ''} tipo='error' /> : ''}
+                {errors.origen && touched.origen ? (
+                  <Alerta
+                    mensaje={errors.origen ? errors.origen : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <FormikSelectField
                   className={classes.textField}
                   fullWidth
@@ -254,7 +306,14 @@ class AssyVarras extends Component {
                   value={values.linea}
                   variant='outlined'
                 />
-                {(errors.linea && touched.linea) ? <Alerta mensaje={errors.linea ? errors.linea : ''} tipo='error' /> : ''}
+                {errors.linea && touched.linea ? (
+                  <Alerta
+                    mensaje={errors.linea ? errors.linea : ''}
+                    tipo='error'
+                  />
+                ) : (
+                  ''
+                )}
                 <ReactToPrint
                   content={() => this.componentRef}
                   trigger={() => (
@@ -270,13 +329,24 @@ class AssyVarras extends Component {
                 />
               </form>
             )}
-          </ Formik>
+          </Formik>
         </Grid>
-        <Grid item sm={6} xs={12}>
-          <Paper className={classes.paper} ref={el => (this.componentRef = el)}>
-            <Typography className={classes.aire2} variant='h2'>
-              {this.state.parte}
-            </Typography>
+        <Grid container spacing={1}>
+          <Paper
+            className={classes.paper}
+            ref={(el) => (this.componentRef = el)}
+            >
+            <Box fontSize='h5.fontSize' m={1} textAlign='center'>
+              CY-NN055HGHV1H
+            </Box>
+            <Box m={1} textAlign='center'>
+              <JsBarcode
+                format={'CODE39'}
+                height={75}
+                value={this.state.parte}
+                width={1.5}
+              />
+            </Box>
           </Paper>
           <div>
             <BarcodeReader
