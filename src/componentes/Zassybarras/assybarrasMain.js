@@ -236,6 +236,7 @@ class AssyBarras extends Component {
     };
     const hoy = moment(new Date()).locale('es').format('YYYYMMDD');
     const oxtions = catIdf;
+    console.table(oxtions);
     // Autosuggest will pass through all these props to the input.
     /*     const inputProps = {
           placeholder: 'Type a programming language',
@@ -266,7 +267,7 @@ class AssyBarras extends Component {
                       className={classes.textField}
                       label='Nro. de Parte'
                       margin='normal'
-                      name='parte555'
+                      name='txtParte'
                       variant='outlined'
                     />
                     {(errors.parte && touched.parte) ? <Alerta mensaje={errors.parte ? errors.parte : ''} tipo='error' /> : ''}

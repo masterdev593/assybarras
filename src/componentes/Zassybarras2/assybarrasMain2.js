@@ -80,7 +80,7 @@ class AssyVarras extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parte: 'MX09BN9504767AS049K8F1223',
+      parte: 'MX09BN9504764AS022MBE0028',
       descripcion: 'MAIN B/D (SEM-P)',
       ubicacion: '',
       factura: '',
@@ -336,9 +336,6 @@ class AssyVarras extends Component {
             className={classes.paper}
             ref={(el) => (this.componentRef = el)}
             >
-            <Box fontSize='h5.fontSize' m={1} textAlign='center'>
-              CY-NN055HGHV1H
-            </Box>
             <Box m={1} textAlign='center'>
               <JsBarcode
                 format={'CODE39'}
@@ -346,6 +343,9 @@ class AssyVarras extends Component {
                 value={this.state.parte}
                 width={1.5}
               />
+            </Box>
+            <Box fontSize='h6.fontSize' m={1} textAlign='center'>
+              MADE IN MEXICO (SAMEX)
             </Box>
           </Paper>
           <div>
